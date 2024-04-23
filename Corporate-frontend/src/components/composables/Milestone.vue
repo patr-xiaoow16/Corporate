@@ -28,6 +28,7 @@ import { onMounted, ref } from 'vue';
 import 'd3-milestones/build/d3-milestones.css';
 import milestones from 'd3-milestones';
 
+
 const selectedEvent = ref(null);
 const tooltipContent = ref('');
 const tooltipPosition = ref({ x: 0, y: 0 });

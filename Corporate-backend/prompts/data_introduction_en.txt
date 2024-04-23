@@ -1,0 +1,8 @@
+
+Data Set Introduction
+
+This data set includes a comprehensive financial metrics report of a company, covering various dimensions including but not limited to financial position, cash flow, investment, and financing activities. The data set contains 54 records and 250 fields, with 94 numeric fields representing specific financial metrics such as net assets per share, ending cash balance, etc.; 156 object-type fields mainly include ratios and percentage data such as year-over-year and quarter-over-quarter growth rates.
+
+Specific fields include net assets per share, ending cash and cash equivalents balance, cash paid for investment, cash received from selling goods and providing services, and also some ratio analyses like debt to assets ratio and basic earnings per share. The data spans quarterly and annual accumulations, providing year-over-year and quarter-over-quarter data, which helps analyze trends in business operational efficiency.
+
+By analyzing these financial indicators, one can gain a deep understanding of the company's financial condition and business performance, providing data support for investment decisions and business management.

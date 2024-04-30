@@ -20,43 +20,40 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-// import { useStore } from '@/stores/main';
+import { useMainStore } from '@/stores/main';
 
-// const store = useStore();
+const store = useMainStore();
 
 const userInput = ref('');
 const messages = ref([]);
 
 const sendQuestion = async () => {
-    if (userInput.value.trim()) {
-        const question = userInput.value;
-        messages.value.push({ sender: 'user', content: question });
-        userInput.value = '';  // Clear the input after sending
-        try {
-            const response = await axios.post('http://127.0.0.1:5000/ask', { question });
-            if (response.data.texts) {
-                messages.value.push({ sender: 'bot', content: response.data.texts });
-            } else {
-                messages.value.push({ sender: 'bot', content: 'No response received.' });
-            }
-        } catch (error) {
-            console.error('Error sending the question:', error);
-            messages.value.push({ sender: 'bot', content: 'Error communicating with the server.' });
-        }
+  if (userInput.value.trim()) {
+    const question = userInput.value;
+    const userMessage = { sender: 'user', content: question };
+    messages.value.push(userMessage); // 将用户问题添加到消息数组
+    userInput.value = ''; // 清空输入框
+    
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/ask', { question });
+      console.log('----------Response data:---------', response.data); 
+      if (response.data.json_data && response.data.json_data.insight) {
+        const insightText = response.data.json_data.insight.text; // 获取insight中的text
+        messages.value.push({ sender: 'bot', content: insightText }); // 显示insight文本
+      } else {
+        messages.value.push({ sender: 'bot', content: 'No insightful response received.' });
+      }
+      // 保存 chart_json 到 store
+      if (response.data.chart_json) {
+        store.setChartJson(response.data.chart_json);
+      }
+    } catch (error) {
+      console.error('Error sending the question:', error);
+      messages.value.push({ sender: 'bot', content: 'Error communicating with the server.' });
     }
+  }
 }
 
-// const sendQuestion = async () => {
-//     if (userInput.value.trim()) {
-//         const question = userInput.value;
-//         store.addMessage({ sender: 'user', content: question });
-//         userInput.value = '';
-
-//         const currentQuestion = store.questions[store.currentQuestionIndex];
-//         store.addMessage({ sender: 'bot', content: currentQuestion.response });
-//         store.nextQuestion();
-//     }
-// }
 </script>
 
 <style>

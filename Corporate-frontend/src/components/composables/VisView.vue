@@ -1,86 +1,79 @@
 <template>
-    <div class="card">
-      <div class="card-header">
-        Data Visualization
-      </div>
+  <div class="card">
+    <div class="card-header">
+      Data Visualization
+    </div>
+    <div class="vega-chart-wrapper">
       <div ref="vegaContainer" class="vega-chart-container"></div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import vegaEmbed from 'vega-embed';
-//   import { useStore } from '@/stores/main';
-  
+  </div>
+</template>
 
-//   const store = useStore();
+<script setup>
+import { ref, onMounted, onUnmounted, watchEffect, toRaw } from 'vue';
+import { useMainStore } from '@/stores/main';
+import vegaEmbed from 'vega-embed';
 
-  const vegaContainer = ref(null);
-  const spec = {
-    // Vega-Lite specification object
-    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-    description: 'A simple bar chart with embedded data.',
-    data: {
-      values: [
-        {a: 'A', b: 28}, {a: 'B', b: 55}, {a: 'C', b: 43},
-        {a: 'D', b: 91}, {a: 'E', b: 81}, {a: 'F', b: 53},
-        {a: 'G', b: 19}, {a: 'H', b: 87}, {a: 'I', b: 52}
-      ]
-    },
-    mark: 'bar',
-    encoding: {
-      x: {field: 'a', type: 'nominal', axis: {labelAngle: 0}},
-      y: {field: 'b', type: 'quantitative'}
+const vegaContainer = ref(null);
+const store = useMainStore();
+
+onMounted(() => {
+  watchEffect(async () => {
+    // 将反应式代理转换为原始对象，以避免结构化克隆错误
+    const chartData = toRaw(store.chartJson);
+
+    if (chartData) {
+      try {
+        console.log('Attempting to render chart with JSON:', chartData);
+        await vegaEmbed(vegaContainer.value, chartData, { actions: false });
+        console.log('Chart rendered successfully.');
+      } catch (error) {
+        console.error('Error embedding chart:', error);
+      }
+    } else {
+      console.log('store.chartJson is not set.');
     }
-  };
-  
-  const renderChart = () => {
-    if (vegaContainer.value) {
-      vegaEmbed(vegaContainer.value, spec, { actions: false })
-        .then(result => {
-          console.log('Chart rendered!', result);
-        })
-        .catch(error => {
-          console.error('Error rendering chart:', error);
-          vegaContainer.value.innerHTML = 'Failed to render chart';
-        });
-    }
-  };
+  });
+});
 
-//   const renderChart = () => {
-//     const chart = store.charts[store.currentQuestionIndex];
-//     if (vegaContainer.value && chart) {
-//         vegaEmbed(vegaContainer.value, chart.spec, { actions: false })
-//             .then(result => console.log('Chart rendered!', result))
-//             .catch(error => console.error('Error rendering chart:', error));
-//     }
-// };
-  
-  onMounted(renderChart);
-  </script>
-  
-  <style>
-  .card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    background-color: #fff;
-    margin: 20px;
-    overflow: hidden;
+onUnmounted(() => {
+  // 当组件卸载时，清除任何已安装的图表
+  if (vegaContainer.value) {
+    vegaEmbed.dispose(vegaContainer.value);
   }
-  
-  .card-header {
-    padding: 16px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .vega-chart-container {
-    width: 100%;
-    height: 400px;
-  }
-  </style>
-  
+});
+</script>
+
+
+<style>
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin: 20px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eee;
+}
+
+.vega-chart-container {
+  width: 100%;
+  height: 400px;
+}
+
+.vega-chart-wrapper {
+  padding: 10px; /* 内边距 */
+  background-color: #f9f9f9; /* 背景色 */
+  border-radius: 4px; /* 边框圆角 */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+</style>

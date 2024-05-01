@@ -157,7 +157,7 @@ G6.registerNode('level1node', {
                     opacity: 0
                 },
                 name: 'operator-box'
-            });z
+            });
             group.addShape('circle', {
                 attrs: {
                     r: 6,
@@ -616,11 +616,11 @@ const initGraph = () => {
         layout: {
             type: 'compactBox',
             direction: 'TB', // 修改方向为从上到下
-            getHGap: function () {
-                return 100; // 水平间距
+            getHGap: function (d) {
+                return 2 + d.level * 2; // 水平间距，基于层级增加
             },
-            getVGap: function () {
-                return 30; // 垂直间距
+            getVGap: function (d) {
+                return 5 + d.level * 2; // 垂直间距，基于层级减少
             },
         },
         defaultEdge: {

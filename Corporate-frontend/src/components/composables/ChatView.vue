@@ -176,7 +176,7 @@ const selectExecutedTask = async (taskContent) => {
 
 </script>
 
-<style>
+<style scoped>
 .chat-container {
     display: flex;
     flex-direction: column;
@@ -259,7 +259,7 @@ const selectExecutedTask = async (taskContent) => {
     padding: 10px 15px;
     max-width: 95%;
     word-wrap: break-word;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     align-self: flex-start;
     margin-left: 10px;
 }

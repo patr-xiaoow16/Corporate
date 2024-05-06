@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "净资产收益率",
+    "值": 0.019205064213246126
+  },
+  {
+    "年份": "2021",
+    "标签": "净资产收益率",
+    "值": 0.01550881940166995
+  },
+  {
+    "年份": "2020",
+    "标签": "净资产收益率",
+    "值": 0.02737101823355801
+  },
+  {
+    "年份": "2019",
+    "标签": "净资产收益率",
+    "值": 0.01532561474958754
+  },
+  {
+    "年份": "2018",
+    "标签": "净资产收益率",
+    "值": 0.01862880091075739
+  },
+  {
+    "年份": "2017",
+    "标签": "净资产收益率",
+    "值": 0.026983942231688936
+  },
+  {
+    "年份": "2016",
+    "标签": "净资产收益率",
+    "值": 0.023969034568788305
+  },
+  {
+    "年份": "2015",
+    "标签": "净资产收益率",
+    "值": 0.026262556973159382
+  },
+  {
+    "年份": "2014",
+    "标签": "净资产收益率",
+    "值": 0.028158558318698266
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "净资产收益率的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

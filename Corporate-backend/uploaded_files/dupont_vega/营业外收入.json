@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "营业外收入",
+    "值": 9156115.54
+  },
+  {
+    "年份": "2021",
+    "标签": "营业外收入",
+    "值": 17119329.76
+  },
+  {
+    "年份": "2020",
+    "标签": "营业外收入",
+    "值": 35623699.15
+  },
+  {
+    "年份": "2019",
+    "标签": "营业外收入",
+    "值": 17146858.72
+  },
+  {
+    "年份": "2018",
+    "标签": "营业外收入",
+    "值": 14432081.36
+  },
+  {
+    "年份": "2017",
+    "标签": "营业外收入",
+    "值": 20747193.58
+  },
+  {
+    "年份": "2016",
+    "标签": "营业外收入",
+    "值": 57299758.72
+  },
+  {
+    "年份": "2015",
+    "标签": "营业外收入",
+    "值": 56510321.8
+  },
+  {
+    "年份": "2014",
+    "标签": "营业外收入",
+    "值": 47175526.6
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "营业外收入的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

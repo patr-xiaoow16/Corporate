@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "营业总收入",
+    "值": 40257239155.0
+  },
+  {
+    "年份": "2021",
+    "标签": "营业总收入",
+    "值": 24136598727.0
+  },
+  {
+    "年份": "2020",
+    "标签": "营业总收入",
+    "值": 19285641347.0
+  },
+  {
+    "年份": "2019",
+    "标签": "营业总收入",
+    "值": 13003331784.0
+  },
+  {
+    "年份": "2018",
+    "标签": "营业总收入",
+    "值": 10368931999.0
+  },
+  {
+    "年份": "2017",
+    "标签": "营业总收入",
+    "值": 8886060069.0
+  },
+  {
+    "年份": "2016",
+    "标签": "营业总收入",
+    "值": 6003662456.0
+  },
+  {
+    "年份": "2015",
+    "标签": "营业总收入",
+    "值": 4569247183.0
+  },
+  {
+    "年份": "2014",
+    "标签": "营业总收入",
+    "值": 3062247399.0
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "营业总收入的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

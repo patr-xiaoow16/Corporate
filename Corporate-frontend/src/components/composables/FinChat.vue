@@ -12,7 +12,7 @@
         <div class="input-area">
             <input v-model="userInput" placeholder="Type your message..." @keyup.enter="sendQuestion"
                 class="input-box" />
-            <button @click="sendQuestion" class="send-button">Send</button>
+            <button @click="sendQuestion1" class="send-button">Send</button>
         </div>
     </div>
 </template>
@@ -27,6 +27,10 @@ const store = useMainStore();
 const userInput = ref('');
 const messages = ref([]);
 
+const sendQuestion1 = () => {
+    console.log(store.chartsJson);
+}
+
 const sendQuestion = async () => {
   if (userInput.value.trim()) {
     const question = userInput.value;
@@ -37,16 +41,33 @@ const sendQuestion = async () => {
     try {
       const response = await axios.post('http://127.0.0.1:5000/ask', { question });
       console.log('----------Response data:---------', response.data); 
+
+
       if (response.data.json_data && response.data.json_data.insight) {
         const insightText = response.data.json_data.insight.text; // 获取insight中的text
         messages.value.push({ sender: 'bot', content: insightText }); // 显示insight文本
       } else {
         messages.value.push({ sender: 'bot', content: 'No insightful response received.' });
       }
+
+    //   // 确认 response.data 是否有 json_data 字段，并且 json_data 字段内有 insight
+    //   if (response.data && response.data.insight) {
+    //     const insightText = response.data.insight.text; // 获取insight中的text
+    //     messages.value.push({ sender: 'bot', content: insightText }); // 显示insight文本
+    //   } else {
+    //     messages.value.push({ sender: 'bot', content: 'No insightful response received.' });
+    //   }
+
+
       // 保存 chart_json 到 store
       if (response.data.chart_json) {
-        store.setChartJson(response.data.chart_json);
+        store.addChartJson(response.data.chart_json);
+        console.log('----------Response chart_json:---------', response.data.chart_json); 
       }
+    //   // 保存 chart_json 到 store
+    //   if (response.data.chart_json) {
+    //     store.setChartJson(response.data.chart_json);
+    //   }
     } catch (error) {
       console.error('Error sending the question:', error);
       messages.value.push({ sender: 'bot', content: 'Error communicating with the server.' });
@@ -56,7 +77,7 @@ const sendQuestion = async () => {
 
 </script>
 
-<style>
+<style scoped>
 .chat-container {
     display: flex;
     flex-direction: column;
@@ -72,6 +93,7 @@ const sendQuestion = async () => {
     font-weight: bold;
     color: #333;
     background-color: #f5f5f5;
+    border-bottom: 1px solid #eee;
 }
 
 .chat-box {
@@ -139,8 +161,9 @@ const sendQuestion = async () => {
     padding: 10px 15px;
     max-width: 95%;
     word-wrap: break-word;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     align-self: flex-start;
     margin-left: 10px;
 }
+
 </style>

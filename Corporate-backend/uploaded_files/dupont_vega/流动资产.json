@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "流动资产",
+    "值": 51993725437.0
+  },
+  {
+    "年份": "2021",
+    "标签": "流动资产",
+    "值": 36307432822.0
+  },
+  {
+    "年份": "2020",
+    "标签": "流动资产",
+    "值": 23253041619.0
+  },
+  {
+    "年份": "2019",
+    "标签": "流动资产",
+    "值": 18429304933.0
+  },
+  {
+    "年份": "2018",
+    "标签": "流动资产",
+    "值": 14465023175.0
+  },
+  {
+    "年份": "2017",
+    "标签": "流动资产",
+    "值": 13171977300.0
+  },
+  {
+    "年份": "2016",
+    "标签": "流动资产",
+    "值": 9350293472.0
+  },
+  {
+    "年份": "2015",
+    "标签": "流动资产",
+    "值": 5626922704.0
+  },
+  {
+    "年份": "2014",
+    "标签": "流动资产",
+    "值": 4432848117.0
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "流动资产的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

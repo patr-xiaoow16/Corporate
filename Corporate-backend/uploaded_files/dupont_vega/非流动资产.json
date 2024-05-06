@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "非流动资产",
+    "值": 9632486090.0
+  },
+  {
+    "年份": "2021",
+    "标签": "非流动资产",
+    "值": 6532698094.0
+  },
+  {
+    "年份": "2020",
+    "标签": "非流动资产",
+    "值": 4749892376.0
+  },
+  {
+    "年份": "2019",
+    "标签": "非流动资产",
+    "值": 4389823329.0
+  },
+  {
+    "年份": "2018",
+    "标签": "非流动资产",
+    "值": 4027626907.0
+  },
+  {
+    "年份": "2017",
+    "标签": "非流动资产",
+    "值": 3076028672.0
+  },
+  {
+    "年份": "2016",
+    "标签": "非流动资产",
+    "值": 2306505675.0
+  },
+  {
+    "年份": "2015",
+    "标签": "非流动资产",
+    "值": 1156193876.0
+  },
+  {
+    "年份": "2014",
+    "标签": "非流动资产",
+    "值": 446502826.3
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "非流动资产的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

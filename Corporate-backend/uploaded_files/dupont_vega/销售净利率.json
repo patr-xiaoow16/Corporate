@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "销售净利率",
+    "值": 0.09179556114669683
+  },
+  {
+    "年份": "2021",
+    "标签": "销售净利率",
+    "值": 0.0705979574770763
+  },
+  {
+    "年份": "2020",
+    "标签": "销售净利率",
+    "值": 0.10243451555565215
+  },
+  {
+    "年份": "2019",
+    "标签": "销售净利率",
+    "值": 0.070099444271013
+  },
+  {
+    "年份": "2018",
+    "标签": "销售净利率",
+    "值": 0.07882116419210977
+  },
+  {
+    "年份": "2017",
+    "标签": "销售净利率",
+    "值": 0.11414736381296457
+  },
+  {
+    "年份": "2016",
+    "标签": "销售净利率",
+    "值": 0.09096612413880852
+  },
+  {
+    "年份": "2015",
+    "标签": "销售净利率",
+    "值": 0.09325624800412555
+  },
+  {
+    "年份": "2014",
+    "标签": "销售净利率",
+    "值": 0.09250935215832311
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "销售净利率的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "净利润",
+    "值": 3695435858.4500003
+  },
+  {
+    "年份": "2021",
+    "标签": "净利润",
+    "值": 1703994570.57
+  },
+  {
+    "年份": "2020",
+    "标签": "净利润",
+    "值": 1975515328.56
+  },
+  {
+    "年份": "2019",
+    "标签": "净利润",
+    "值": 911526331.73
+  },
+  {
+    "年份": "2018",
+    "标签": "净利润",
+    "值": 817291291.59
+  },
+  {
+    "年份": "2017",
+    "标签": "净利润",
+    "值": 1014320331.5600001
+  },
+  {
+    "年份": "2016",
+    "标签": "净利润",
+    "值": 546129904.26
+  },
+  {
+    "年份": "2015",
+    "标签": "净利润",
+    "值": 426110848.49
+  },
+  {
+    "年份": "2014",
+    "标签": "净利润",
+    "值": 283286523.03
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "净利润的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

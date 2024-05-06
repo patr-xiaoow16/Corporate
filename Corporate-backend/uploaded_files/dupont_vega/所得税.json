@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "所得税",
+    "值": 438525751.7
+  },
+  {
+    "年份": "2021",
+    "标签": "所得税",
+    "值": 188677565.3
+  },
+  {
+    "年份": "2020",
+    "标签": "所得税",
+    "值": 206026555.9
+  },
+  {
+    "年份": "2019",
+    "标签": "所得税",
+    "值": 120176322.4
+  },
+  {
+    "年份": "2018",
+    "标签": "所得税",
+    "值": 105348720.3
+  },
+  {
+    "年份": "2017",
+    "标签": "所得税",
+    "值": 147460404.9
+  },
+  {
+    "年份": "2016",
+    "标签": "所得税",
+    "值": 122005805.7
+  },
+  {
+    "年份": "2015",
+    "标签": "所得税",
+    "值": 66399300.95
+  },
+  {
+    "年份": "2014",
+    "标签": "所得税",
+    "值": 42371859.53
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "所得税的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

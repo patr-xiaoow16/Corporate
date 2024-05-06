@@ -124,7 +124,7 @@ const initMilestones = () => {
         .labelFormat('%Y')
         // .optimize(true)
         // .autoResize(true)
-        // .orientation('horizontal')
+        .orientation('horizontal')
         .onEventClick(d => {
             // 访问带有值的selectedEvent
             selectedEvent.value = {
@@ -208,3 +208,4 @@ onMounted(() => {
     /* Arrow pointing up */
 }
 </style>
+

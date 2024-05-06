@@ -15,6 +15,7 @@ from analysiscn import generate_insight_by_llm_codes
 import altair as alt
 from decompose_task import decompose_task
 from util import load_txt
+# from analysis_vega import generate_insight_by_llm
 
 # from summarize import Summarizer
 
@@ -34,10 +35,11 @@ def ask():
             thread_id, assistant_id = init_llm()  # 确保LLM已初始化，线程已准备就绪
             print(f"Initialized LLM with thread_id: {thread_id}, assistant_id: {assistant_id}")
             # print("-----------------free_question---------------", free_question)
-            record = generate_insight_by_llm_codes(free_question, thread_id, assistant_id, data_introduction)
-            
+            record = generate_insight_by_llm_codes(free_question, thread_id, assistant_id)
+            print("-----------------record---------------", record)
             # 提取图表数据
             chart_json = record["chart_json"]
+            print("-----------------chart_json---------------", chart_json)
             
             # print("-----------------free_question record---------------", record)
             return jsonify(record)

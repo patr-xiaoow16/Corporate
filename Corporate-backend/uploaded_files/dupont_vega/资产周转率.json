@@ -1,0 +1,83 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Visualization of {label} over the years with tooltips",
+  "width": "container",  
+  "height": "container", 
+  "data": {
+    "values": [
+  {
+    "年份": "2022",
+    "标签": "资产周转率",
+    "值": 0.6532486446511853
+  },
+  {
+    "年份": "2021",
+    "标签": "资产周转率",
+    "值": 0.5634109469667572
+  },
+  {
+    "年份": "2020",
+    "标签": "资产周转率",
+    "值": 0.6887007393740778
+  },
+  {
+    "年份": "2019",
+    "标签": "资产周转率",
+    "值": 0.5698434942255902
+  },
+  {
+    "年份": "2018",
+    "标签": "资产周转率",
+    "值": 0.5607055750810264
+  },
+  {
+    "年份": "2017",
+    "标签": "资产周转率",
+    "值": 0.5469015757235899
+  },
+  {
+    "年份": "2016",
+    "标签": "资产周转率",
+    "值": 0.5150352494102213
+  },
+  {
+    "年份": "2015",
+    "标签": "资产周转率",
+    "值": 0.673620618061086
+  },
+  {
+    "年份": "2014",
+    "标签": "资产周转率",
+    "值": 0.6275931848611052
+  }
+]
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "年份",
+      "type": "ordinal",
+      "title": "年份",
+      "axis": { "labelOverlap": "parity" } 
+    },
+    "y": {
+      "field": "值",
+      "type": "quantitative",
+      "title": "资产周转率的值",
+      "format": ".2%"
+    },
+    "tooltip": [
+      {"field": "年份", "type": "ordinal", "title": "Year"},
+      {"field": "值", "type": "quantitative", "title": "Value", "format": ".2%"}
+    ]
+  },
+  "selection": {
+    "brush": { "type": "interval", "encodings": ["x"] }
+  },
+  "transform": [
+    {
+      "filter": {"selection": "brush"}
+    }
+  ]
+}

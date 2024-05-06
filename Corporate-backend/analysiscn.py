@@ -87,6 +87,8 @@ def plot(data: pd.DataFrame):
         tooltip=['年份:N', '月:N', '论文数量:Q']
     ).properties(
         title='每月发表的论文数量'
+        width='container',  
+        height='container'  
     )
     
     return chart
@@ -95,7 +97,7 @@ def plot(data: pd.DataFrame):
     """
     data = pd.read_csv("uploaded_files/target.csv", encoding='utf-8')
     
-    # prompt1 = f"对于这个任务: {task}, 数据概述是 {data_introduction}。你需要编写Python代码来分析数据并解决这个任务。你需要确保分析和可视化过程中使用的列名与数据集中的列名相匹配，使用数据集中的列名。数据集 target.csv 已经被 pandas.read_csv() 读取进一个 dataframe，只需使用变量 'data' 来引用这个 dataframe，并不需要再读取其他数据。完成数据分析后，你应该继续使用 altair 来生成可视化。确保每个生成的可视化都有一个刷选功能，允许你选择数据的一个子集。请确保生成单一视图，不需要组合视图。请给我完整的代码，包括数据分析和 altair 部分在内的函数 'plot(data)'。你只需要给出函数定义 'plot(data)'，不需要执行它。请按这个结构编写代码：```python```，这里有一个例子" + code_example
+    # prompt1 = f"对于这个任务: {task}, 数据概述是 {data_introduction}。你需要编写Python代码来分析数据并解决这个任务。你需要确保分析和可视化过程中使用的列名与数据集中的列名相匹配，使用数据集中的列名。数据集 target.csv 已经被 pandas.read_csv() 读取进一个 dataframe，只需使用变量 'data' 来引用这个 dataframe，并不需要再读取其他数据。完成数据分析后，你应该继续使用 altair 来生成可视化。确保每个生成的可视化都有一个刷选功能，允许你选择数据的一个子集。确保高度和宽度都是container。请确保生成单一视图，不需要组合视图。请给我完整的代码，包括数据分析和 altair 部分在内的函数 'plot(data)'。你只需要给出函数定义 'plot(data)'，不需要执行它。请按这个结构编写代码：```python```，这里有一个例子" + code_example
     prompt1 = f"""
     请帮助我解决以下数据分析任务: {task}
 

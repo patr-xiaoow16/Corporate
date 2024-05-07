@@ -82,9 +82,11 @@ const sendQuestion = async () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 91vh;
+    height: 53vh;
     justify-content: center;
     background-color: #f5f5f5;
+    width: 350px;
+    margin-left: 5px; /* 向右移动5像素 */
 }
 
 .chat-title {
@@ -94,11 +96,13 @@ const sendQuestion = async () => {
     color: #333;
     background-color: #f5f5f5;
     border-bottom: 1px solid #eee;
+    width: 350px;
+    margin-left: 5px; /* 向右移动5像素 */
 }
 
 .chat-box {
     width: 320px;
-    height: 620px;
+    height: 335px;
     border: 1px solid #ccc;
     background-color: #fff;
     overflow-y: auto;

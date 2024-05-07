@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="prediction-header">
-            Prediction
+            Summary
         </div>
         <!-- 图表容器 -->
         <section class="wrapper trend-wrapper">
@@ -93,6 +93,7 @@ const changeActiveSeries = (activeSeries) => {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     height: 280px;
+    width: 355px;
 }
 
 .prediction-header {

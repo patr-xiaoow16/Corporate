@@ -14,6 +14,8 @@ def transform_data(data):
                 "series": metric['label'],
                 "value": metric['value']
             })
+            # 对结果按年份排序
+    result.sort(key=lambda x: x["Date"])
     return result
 
 

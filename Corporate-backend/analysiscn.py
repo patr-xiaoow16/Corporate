@@ -17,7 +17,7 @@ import altair as alt
 # 使用 query_handler.py 初始化 LLM
 thread_id, assistant_id = init_llm()
 
-data_introduction = load_txt('./prompts/target_introduction_cn.txt')
+data_introduction = load_txt('./prompts/output_introduction_cn.txt')
 
 
 
@@ -95,20 +95,22 @@ def plot(data: pd.DataFrame):
 
 ```
     """
-    data = pd.read_csv("uploaded_files/target.csv", encoding='utf-8')
+    data = pd.read_csv("uploaded_files/output.csv", encoding='utf-8')
     
     # prompt1 = f"对于这个任务: {task}, 数据概述是 {data_introduction}。你需要编写Python代码来分析数据并解决这个任务。你需要确保分析和可视化过程中使用的列名与数据集中的列名相匹配，使用数据集中的列名。数据集 target.csv 已经被 pandas.read_csv() 读取进一个 dataframe，只需使用变量 'data' 来引用这个 dataframe，并不需要再读取其他数据。完成数据分析后，你应该继续使用 altair 来生成可视化。确保每个生成的可视化都有一个刷选功能，允许你选择数据的一个子集。确保高度和宽度都是container。请确保生成单一视图，不需要组合视图。请给我完整的代码，包括数据分析和 altair 部分在内的函数 'plot(data)'。你只需要给出函数定义 'plot(data)'，不需要执行它。请按这个结构编写代码：```python```，这里有一个例子" + code_example
     prompt1 = f"""
     请帮助我解决以下数据分析任务: {task}
 
     数据介绍: {data_introduction}
-    你需要使用 Python 和 Altair 库编写一个名为 'plot' 的函数来分析和可视化数据。假设数据已经通过 `pd.read_csv("target.csv")` 加载到名为 'data' 的 DataFrame 中。
+    你需要使用 Python 和 Altair 库编写一个名为 'plot' 的函数来分析和可视化数据。你只需要给出函数定义 'plot(data)'，不需要执行它。假设数据已经通过 `pd.read_csv("output.csv")` 加载到名为 'data' 的 DataFrame 中。
     在编写代码前，请先检查数据的列名并确认需要的列是否存在。你可以使用 `data.columns` 来检查列名。
 
     请确保你的函数符合以下要求：
     - 在开始分析前，首先验证数据中是否存在必要的列名，如不存在，请打印出缺失列名的警告。
     - 生成一个包含选择功能的可视化，以便选择数据的子集。
     - 只需要一个单一视图，不需要组合视图。
+    - 请注意确保高度和宽度都是container, width='container', height='container'  
+
 
     请提供完整的函数定义，不需要执行它。以下是你可以参考的代码框架：
     {code_example}

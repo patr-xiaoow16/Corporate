@@ -137,12 +137,12 @@ h3 {
     padding: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
-    height: 450px;
+    height: 740px;
 
 }
 
 .timeline-header {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding: 2px;
     font-size: 20px;
     font-weight: bold;
@@ -151,7 +151,7 @@ h3 {
 }
 
 .timeline-container {
-    max-height: 360px;
+    max-height: 660px;
     overflow-y: auto;
     /* 允许垂直滚动 */
     padding-right: 5px;

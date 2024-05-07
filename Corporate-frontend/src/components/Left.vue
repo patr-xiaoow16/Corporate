@@ -5,8 +5,9 @@
     <!-- <Summary></Summary> -->
     <!-- <DuPontClick></DuPontClick> -->
     <!-- <Timeline></Timeline> -->
-    <TimelineCard></TimelineCard>
+    <!-- <TimelineCard></TimelineCard> -->
     <PredictionCard></PredictionCard>
+    <FinChat></FinChat>
   </div>
 </template>
 
@@ -16,6 +17,7 @@
 // import Summary from "./composables/Summary.vue";
 // import DuPontClick from './composables/DuPontClick.vue';
 // import Timeline from './composables/Timeline.vue';
-import TimelineCard from './composables/TimelineCard.vue';
+// import TimelineCard from './composables/TimelineCard.vue';
 import PredictionCard from './composables/PredictionCard.vue';
+import FinChat from './composables/FinChat.vue';
 </script>

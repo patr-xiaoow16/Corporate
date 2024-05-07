@@ -819,7 +819,8 @@ export const getNodeConfig = (label) => {
                     "filter": { "selection": "brush" }
                 }
             ]
-        }, '营业总收入': {
+        }, 
+        '营业总收入': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "description": "Visualization of {label} over the years with tooltips",
             "width": "container",
@@ -900,8 +901,8 @@ export const getNodeConfig = (label) => {
                     "filter": { "selection": "brush" }
                 }
             ]
-        }
-        , '资产净利率': {
+        },
+        '资产净利率': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "description": "Visualization of {label} over the years with tooltips",
             "width": "container",
@@ -982,7 +983,8 @@ export const getNodeConfig = (label) => {
                     "filter": { "selection": "brush" }
                 }
             ]
-        }, '资产周转率': {
+        }, 
+        '资产周转率': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "description": "Visualization of {label} over the years with tooltips",
             "width": "container",
@@ -1063,7 +1065,8 @@ export const getNodeConfig = (label) => {
                     "filter": { "selection": "brush" }
                 }
             ]
-        }, '总资产': {
+        },
+        '总资产': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "description": "Visualization of {label} over the years with tooltips",
             "width": "container",

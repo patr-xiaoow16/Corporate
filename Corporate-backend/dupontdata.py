@@ -640,10 +640,10 @@ def create_dupont_structure(year):
     return data_structure
 
 # 生成2022年的数据
-data_for_2022 = create_dupont_structure("2022")
-print(json.dumps(data_for_2022, indent=2, ensure_ascii=False))
+data_for_2022 = create_dupont_structure("2014")
+# print(json.dumps(data_for_2022, indent=2, ensure_ascii=False))
 data = json.dumps(data_for_2022, indent=2, ensure_ascii=False)
-print(data)
+# print(data)
 
 
 def to_javascript_object(data, indent=0):

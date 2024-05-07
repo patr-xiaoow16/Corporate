@@ -1,18 +1,94 @@
 <template>
     <div class="card">
-        <div class="dupont-header">
-            DuPont analysis
+        <div class="dupont-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>DuPont analysis</div>
+
+            <a-space style="margin-top: -10px;"> <!-- 调整这里的 margin-top 值以向上移动 -->
+                <a-select v-model:value="selectedYear" :style="{ width: '120px' }" @change="handleChange"
+                    :options="options" />
+            </a-space>
         </div>
         <div id="container" style="width: 100%; height: 400px;"></div>
     </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { computed } from 'vue';
 import G6 from '@antv/g6';
 import { useChartsStore } from '@/stores/chartsStore';
-import { getNodeConfig } from './chartConfigs'; 
-import { data } from './chartData'; // 杜邦分析数据
+import { getNodeConfig } from './chartConfigs';
+// import { data } from './chartData'; // 杜邦分析数据
+import { useSummaryStore } from '@/stores/summaryStore';  // summaryStore
+import { storeToRefs } from 'pinia';
+import { Select as ASelect, Space as ASpace } from 'ant-design-vue';
+
+
+const store = useChartsStore();
+const summarystore = useSummaryStore();
+const { chartData, selectedYear } = storeToRefs(summarystore); // 用storeToRefs
+
+// 使用 computed 来保持响应性
+const graphData = computed(() => {
+    return chartData.value[selectedYear.value];
+});
+
+let graph = null;
+
+const options = [
+    { value: '2014', label: '2014' },
+    { value: '2015', label: '2015' },
+    { value: '2016', label: '2016' },
+    { value: '2017', label: '2017' },
+    { value: '2018', label: '2018' },
+    { value: '2019', label: '2019' },
+    { value: '2020', label: '2020' },
+    { value: '2021', label: '2021' },
+    { value: '2022', label: '2022' }
+];
+
+const handleChange = (value) => {
+    console.log(`selected ${value}`);
+    selectedYear.value = value;  // 更新 selectedYear 为选中的年份
+    loadGraphData();  // 重新加载和渲染图表
+};
+
+const loadGraphData = () => {
+    if (!document.getElementById('container')) {
+        console.warn("Container not ready");
+        return;
+    }
+
+    const data = graphData.value;
+
+    // 遍历树状数据，添加节点类型和层级信息
+    G6.Util.traverseTree(graphData.value, subtree => {
+        if (subtree.level === undefined) {
+            subtree.level = 0;
+        }
+        subtree.children?.forEach(child => {
+            child.level = subtree.level + 1;
+        });
+        switch (subtree.level) {
+            case 0:
+                subtree.type = 'root';
+                break;
+            case 1:
+                subtree.type = 'level1node';
+                break;
+            default:
+                subtree.type = 'othernode';
+        }
+    });
+
+    if (!graph) {
+        // 如果图表实例不存在，则初始化它
+        initGraph(data);
+    } else {
+        // 如果图表实例已存在，直接加载数据
+        graph.changeData(data);
+    }
+};
 
 
 G6.registerNode('root', {
@@ -193,28 +269,11 @@ G6.registerEdge('round-poly', {
 }, 'polyline')
 
 
-// 遍历树状数据，添加节点类型和层级信息
-G6.Util.traverseTree(data, subtree => {
-    if (subtree.level === undefined) subtree.level = 0;
-    subtree.children?.forEach(child => child.level = subtree.level + 1);
-    switch (subtree.level) {
-        case 0:
-            subtree.type = 'root';
-            break;
-        case 1:
-            subtree.type = 'level1node';
-            break;
-        default:
-            subtree.type = 'othernode';
-    }
-});
 
-
-
-const initGraph = () => {
+const initGraph = (data) => {
     const width = document.getElementById('container').scrollWidth;
-    const height = (document.getElementById('container').scrollHeight || 500) - 30;
-    const graph = new G6.TreeGraph({
+    const height = (document.getElementById('container').scrollHeight || 500) - 20;
+    graph = new G6.TreeGraph({
         container: 'container',
         width,
         height,
@@ -277,7 +336,7 @@ const initGraph = () => {
         graph.setItemState(e.item, 'hover', false);
     });
 
-    
+
     graph.on('node:dblclick', e => {
         console.log("dblclick");
         const nodeData = e.item.getModel();
@@ -291,13 +350,20 @@ const initGraph = () => {
     });
 
 
-
-    graph.data(data);
+    graph.data(graphData.value);
     graph.render();
 };
 
+
+watch(selectedYear, (newYear) => {
+    loadGraphData();
+}, { immediate: true });
+
+
+
 onMounted(() => {
-    initGraph();
+    // initGraph();
+    loadGraphData();  // 加载和渲染图表数据
 });
 </script>
 

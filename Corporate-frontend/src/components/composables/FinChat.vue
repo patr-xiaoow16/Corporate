@@ -120,9 +120,10 @@ const sendQuestion = async () => {
 
 .input-box {
     flex-grow: 1;
-    padding: 8px;
+    padding: 1px 20px;  /* 减小上下的 padding 并增加左右的 padding */
     border: 2px solid #ccc;
-    border-radius: 20px;
+    border-radius: 12px;
+    width: 80%;  /* 明确设置宽度，根据需要调整 */
     outline: none;
     transition: border-color 0.3s;
 }
@@ -132,11 +133,11 @@ const sendQuestion = async () => {
 }
 
 .send-button {
-    padding: 8px 12px;
+    padding: 6px 10px;
     background-color: #1a73e8;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 12px;
     cursor: pointer;
     margin-left: 10px;
     transition: background-color 0.3s;

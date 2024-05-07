@@ -7,13 +7,15 @@
             <a-timeline>
                 <a-timeline-item color="green" @click="editContent('initiation')">
                     <div class="timeline-content" @click.stop="handleClick('Project Initiation')">
-                        <h3>Project Initiation</h3>
+                        <h1>2014</h1>
+                        <h3>Initiation</h3>
                         <p>{{ contents.initiation }}</p>
                     </div>
                 </a-timeline-item>
 
                 <a-timeline-item color="red">
                     <div class="timeline-content" @click="handleClick('Challenges')">
+                        <h1>2015</h1>
                         <h3>Challenges</h3>
                         <p>Solve initial network problems 1</p>
                         <p>Solve initial network problems 2</p>
@@ -23,6 +25,7 @@
 
                 <a-timeline-item>
                     <div class="timeline-content" @click="handleClick('Technical Review')">
+                        <h1>2016</h1>
                         <h3>Technical Review</h3>
                         <p>Technical testing 1</p>
                         <p>Technical testing 2</p>
@@ -32,6 +35,7 @@
 
                 <a-timeline-item color="gray">
                     <div class="timeline-content" @click="handleClick('Ongoing Tests')">
+                        <h1>2016</h1>
                         <h3>Ongoing Tests</h3>
                         <p>Technical testing 1</p>
                         <p>Technical testing 2</p>
@@ -41,6 +45,7 @@
 
                 <a-timeline-item color="gray">
                     <div class="timeline-content" @click="handleClick('Ongoing Tests')">
+                        <h1>2017</h1>
                         <h3>Ongoing Tests</h3>
                         <p>Technical testing 1</p>
                         <p>Technical testing 2</p>
@@ -50,6 +55,47 @@
 
                 <a-timeline-item color="gray">
                     <div class="timeline-content" @click="handleClick('Ongoing Tests')">
+                        <h1>2018</h1>
+                        <h3>Ongoing Tests</h3>
+                        <p>Technical testing 1</p>
+                        <p>Technical testing 2</p>
+                        <p>Technical testing 3 2015-09-01</p>
+                    </div>
+                </a-timeline-item>
+
+                <a-timeline-item color="gray">
+                    <div class="timeline-content" @click="handleClick('Ongoing Tests')">
+                        <h1>2019</h1>
+                        <h3>Ongoing Tests</h3>
+                        <p>Technical testing 1</p>
+                        <p>Technical testing 2</p>
+                        <p>Technical testing 3 2015-09-01</p>
+                    </div>
+                </a-timeline-item>
+
+                <a-timeline-item color="gray">
+                    <div class="timeline-content" @click="handleClick('Ongoing Tests')">
+                        <h1>2020</h1>
+                        <h3>Ongoing Tests</h3>
+                        <p>Technical testing 1</p>
+                        <p>Technical testing 2</p>
+                        <p>Technical testing 3 2015-09-01</p>
+                    </div>
+                </a-timeline-item>
+
+                <a-timeline-item color="gray">
+                    <div class="timeline-content" @click="handleClick('Ongoing Tests')">
+                        <h1>2021</h1>
+                        <h3>Ongoing Tests</h3>
+                        <p>Technical testing 1</p>
+                        <p>Technical testing 2</p>
+                        <p>Technical testing 3 2015-09-01</p>
+                    </div>
+                </a-timeline-item>
+
+                <a-timeline-item color="gray">
+                    <div class="timeline-content" @click="handleClick('Ongoing Tests')">
+                        <h1>2022</h1>
                         <h3>Ongoing Tests</h3>
                         <p>Technical testing 1</p>
                         <p>Technical testing 2</p>
@@ -126,9 +172,20 @@ const handleCancel = () => {
     /* 该元素是可点击的 */
 }
 
-h3 {
+h1 {
+    font-size: 16px; /* 较大的字体大小 */
+    color: #2c3e50; /* 深蓝色 */
+    font-weight: bold; /* 加粗 */
     margin-top: 0;
-    color: #333;
+    margin-bottom: 10px; /* 添加底部间隔 */
+}
+
+h3 {
+    font-size: 16px; /* 较小的字体大小 */
+    color: #333; /* 深灰色 */
+    font-weight: normal; /* 正常字体 */
+    margin-top: 0;
+    margin-bottom: 5px; /* 较小的底部间隔 */
 }
 
 .card {

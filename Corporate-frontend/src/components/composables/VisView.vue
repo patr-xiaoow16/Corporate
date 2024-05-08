@@ -138,7 +138,7 @@ function renderAllCharts() {
 }
 
 .vega-chart-container {
-  width: 33.3%; 
+  width: 50%; 
   height: 280px; 
   margin-bottom: 20px; 
   background-color: #fff; /* 添加白色背景 */

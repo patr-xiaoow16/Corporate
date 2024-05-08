@@ -125,57 +125,57 @@ def query(prompt, thread_id,assistant_id):
 
 
 
-def queryVega(prompt, thread_id, assistant_id):
+# def queryVega(prompt, thread_id, assistant_id):
      
-    time_start=time.time()
-    # 发送prompt
-    message = llm_instance.client.beta.threads.messages.create(
-        thread_id=thread_id,
-        role="user",
-        content=prompt
-    )
+#     time_start=time.time()
+#     # 发送prompt
+#     message = llm_instance.client.beta.threads.messages.create(
+#         thread_id=thread_id,
+#         role="user",
+#         content=prompt
+#     )
 
-    print("query in")
-    run = llm_instance.client.beta.threads.runs.create(
-        thread_id=thread_id,
-        assistant_id=assistant_id,
-        instructions="Please address the user as Yuheng. The user has a premium account."
-    )
-    print("=====")
-    while run.status != "completed":
-        run = llm_instance.client.beta.threads.runs.retrieve(
-            thread_id=thread_id,
-            run_id=run.id
-        )
+#     print("query in")
+#     run = llm_instance.client.beta.threads.runs.create(
+#         thread_id=thread_id,
+#         assistant_id=assistant_id,
+#         instructions="Please address the user as Yuheng. The user has a premium account."
+#     )
+#     print("=====")
+#     while run.status != "completed":
+#         run = llm_instance.client.beta.threads.runs.retrieve(
+#             thread_id=thread_id,
+#             run_id=run.id
+#         )
 
-    messages = llm_instance.client.beta.threads.messages.list(
-        thread_id=thread_id
-    )
-    text_contents = []
-    json_data = None
-    for message in messages.data[::-1]:
-        for content in message.content:
-            if hasattr(content, 'text') and hasattr(content.text, 'value'):
-                text = content.text.value
-                text_contents.append(text)
-                if 'json' in text:
-                    print(text)
-                    start = text.find("```json\n") + len("```json\n")
-                    end = text.rfind("```")
-                    if start >= 0 and end > start:
-                        json_str = text[start:end].strip()
-                        json_str = json_str.replace("True", "true").replace("False", "false").replace("None", "null")
-                        try:
-                            json_data = json.loads(json_str)
-                        except json.JSONDecodeError as e:
-                            print("JSON parsing error:", e)
+#     messages = llm_instance.client.beta.threads.messages.list(
+#         thread_id=thread_id
+#     )
+#     text_contents = []
+#     json_data = None
+#     for message in messages.data[::-1]:
+#         for content in message.content:
+#             if hasattr(content, 'text') and hasattr(content.text, 'value'):
+#                 text = content.text.value
+#                 text_contents.append(text)
+#                 if 'json' in text:
+#                     print(text)
+#                     start = text.find("```json\n") + len("```json\n")
+#                     end = text.rfind("```")
+#                     if start >= 0 and end > start:
+#                         json_str = text[start:end].strip()
+#                         json_str = json_str.replace("True", "true").replace("False", "false").replace("None", "null")
+#                         try:
+#                             json_data = json.loads(json_str)
+#                         except json.JSONDecodeError as e:
+#                             print("JSON parsing error:", e)
                             
-    print("--------------json_data------------",json_data)
-    time_end=time.time()           
-    runtime=time_end-time_start    
-    runtime=strftime("%H:%M:%S", gmtime(runtime)) 
-    print('runtime',runtime)
-    save_chat_history(thread_id, messages)
+#     print("--------------json_data------------",json_data)
+#     time_end=time.time()           
+#     runtime=time_end-time_start    
+#     runtime=strftime("%H:%M:%S", gmtime(runtime)) 
+#     print('runtime',runtime)
+#     save_chat_history(thread_id, messages)
     
     
-    return {"texts": text_contents[-1], "json_data": json_data}
+#     return {"texts": text_contents[-1], "json_data": json_data}

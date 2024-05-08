@@ -61,7 +61,7 @@ export const data2022 = {
     }, {
         id: 'child-b',
         label: '权益乘数',
-        subLabel: '32.03%',
+        subLabel: '3.1223704976063242',
         children: [{
             id: 'child-b-a',
             label: '股东权益',
@@ -153,7 +153,7 @@ export const data2021 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '38.99%',
+            subLabel: '2.5647124417346343',
             children: [
                 {
                     id: 'child-b-a',
@@ -248,7 +248,7 @@ export const data2020 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '38.80%',
+            subLabel: '2.5774242667417426',
             children: [
                 {
                     id: 'child-b-a',
@@ -343,7 +343,7 @@ export const data2019 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '38.37%',
+            subLabel: '2.6064672066574786',
             children: [
                 {
                     id: 'child-b-a',
@@ -438,7 +438,7 @@ export const data2018 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '42.15%',
+            subLabel: '2.372426781982076',
             children: [
                 {
                     id: 'child-b-a',
@@ -533,7 +533,7 @@ export const data2017 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '43.22%',
+            subLabel: '2.3135008442425375',
             children: [
                 {
                     id: 'child-b-a',
@@ -628,7 +628,7 @@ export const data2016 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '51.16%',
+            subLabel: '1.9546369420619019',
             children: [
                 {
                     id: 'child-b-a',
@@ -723,7 +723,7 @@ export const data2015 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '41.81%',
+            subLabel: '2.391973160983487',
             children: [
                 {
                     id: 'child-b-a',
@@ -818,7 +818,7 @@ export const data2014 = {
         {
             id: 'child-b',
             label: '权益乘数',
-            subLabel: '48.50%',
+            subLabel: '2.0618327931912215',
             children: [
                 {
                     id: 'child-b-a',

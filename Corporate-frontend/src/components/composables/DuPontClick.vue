@@ -317,10 +317,13 @@ const initGraph = (data) => {
                 'operator-box': {
                     opacity: 1
                 }
+            },
+            clicked: {
+                fill: 'rgb(255, 235, 168)', // 当节点被点击时，填充黄色
             }
         },
         modes: {
-            default: ['zoom-canvas', 'drag-canvas', 'collapse-expand']
+            default: ['zoom-canvas', 'drag-canvas', 'collapse-expand', 'dblclick']
         }
     });
 
@@ -338,6 +341,9 @@ const initGraph = (data) => {
 
 
     graph.on('node:dblclick', e => {
+        const node = e.item;
+        const model = node.getModel();
+
         console.log("dblclick");
         const nodeData = e.item.getModel();
         const chartConfig = getNodeConfig(nodeData.label);
@@ -347,11 +353,20 @@ const initGraph = (data) => {
         chartsStore.setCharts([{
             json: chartConfig
         }]);
+
+
+        // 切换节点的 'clicked' 状态的颜色
+        const clicked = node.hasState('clicked');
+        node.setState('clicked', !clicked); // 切换状态
+        console.log("Node current state clicked:", node.hasState('clicked'));
+
     });
 
 
     graph.data(graphData.value);
     graph.render();
+
+
 };
 
 

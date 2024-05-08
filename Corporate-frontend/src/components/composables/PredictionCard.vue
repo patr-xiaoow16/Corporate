@@ -23,7 +23,7 @@
         </section>
 
         <!-- 分析和建议部分 -->
-        
+
 
     </div>
 </template>
@@ -55,6 +55,7 @@ onMounted(async () => {
     // ];
 
     const chartDom = chartNodeRef.value;
+
     const line = new Line(chartDom, {
         data,
         // data: newData,
@@ -63,6 +64,22 @@ onMounted(async () => {
         yField: 'value',
         seriesField: 'series',
         // 原始组件中的其他图表选项
+        yAxis: {
+        label: {
+            formatter: (text) => {
+                const value = parseFloat(text);
+                if (value >= 1000000000) {
+                    return `${(value / 1000000000).toFixed(1)}B`;  // 单位为“十亿”
+                } else if (value < 1 && value !== 0) {
+                    return `${(value / 1000000000).toFixed(1)}B`;  // 单位为“十亿”
+                } else if (value === 0) {
+                    return '0';  // 确保零值显示为 '0'
+                } else {
+                    return `${value}`;  // 不需要转换的保持原样
+                }
+            }
+        }
+    }
     });
 
     line.render();
@@ -194,5 +211,4 @@ const changeActiveSeries = (activeSeries) => {
     left: 10px;
     height: calc(100% - 88px);
 }
-
 </style>

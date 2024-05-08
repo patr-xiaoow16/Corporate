@@ -11,7 +11,7 @@ llm_instance = LLM()
 
 def init_llm():
     file_id = llm_instance.upload_file("uploaded_files/output.csv")
-    assistant_id = llm_instance.create_assistant("您是一名个人数据分析师。回答有关数据表的问题。")
+    assistant_id = llm_instance.create_assistant("您是一名财务分析专家。回答有关数据表的问题。")
     thread_id = llm_instance.create_thread()
     return thread_id, assistant_id
 

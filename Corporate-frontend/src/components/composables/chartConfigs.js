@@ -102,121 +102,131 @@ export const getNodeConfig = (label) => {
                         "selection": "brush"
                     }
                 }
+            ],
+            "insights": [
+                { "year": 2014, "describe": "非流动资产最少，为 446,502,826.3 元" },
+                { "year": 2022, "describe": "非流动资产最多，为 9,632,486,090.0 元" },
+                { "year": 2015, "describe": "非流动资产波动最大，从2014年的 446,502,826.3 元增加到 1,156,193,876.0 元，增长率约为 159%" }
             ]
         },
         '净利润': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "description": "公司财务表现：净利润、营业利润、营业外收支和所得税",
             "data": {
-              "values": [
-                {"Date": "2014", "series": "净利润", "value": 283286523.03},
-                {"Date": "2014", "series": "营业利润", "value": 278788487.5},
-                {"Date": "2014", "series": "营业外收支", "value": 46869895.06},
-                {"Date": "2014", "series": "所得税", "value": 42371859.53},
-                {"Date": "2015", "series": "净利润", "value": 426110848.49},
-                {"Date": "2015", "series": "营业利润", "value": 443563764.8},
-                {"Date": "2015", "series": "营业外收支", "value": 48946384.64},
-                {"Date": "2015", "series": "所得税", "value": 66399300.95},
-                {"Date": "2016", "series": "净利润", "value": 546129904.26},
-                {"Date": "2016", "series": "营业利润", "value": 613286547.9},
-                {"Date": "2016", "series": "营业外收支", "value": 54849162.06},
-                {"Date": "2016", "series": "所得税", "value": 122005805.7},
-                {"Date": "2017", "series": "净利润", "value": 1014320331.56},
-                {"Date": "2017", "series": "营业利润", "value": 1145291896},
-                {"Date": "2017", "series": "营业外收支", "value": 16488840.46},
-                {"Date": "2017", "series": "所得税", "value": 147460404.9},
-                {"Date": "2018", "series": "净利润", "value": 817291291.59},
-                {"Date": "2018", "series": "营业利润", "value": 912426356.4},
-                {"Date": "2018", "series": "营业外收支", "value": 10213655.49},
-                {"Date": "2018", "series": "所得税", "value": 105348720.3},
-                {"Date": "2019", "series": "净利润", "value": 911526331.73},
-                {"Date": "2019", "series": "营业利润", "value": 1047816873},
-                {"Date": "2019", "series": "营业外收支", "value": -16114218.87},
-                {"Date": "2019", "series": "所得税", "value": 120176322.4},
-                {"Date": "2020", "series": "净利润", "value": 1975515328.56},
-                {"Date": "2020", "series": "营业利润", "value": 2168341287},
-                {"Date": "2020", "series": "营业外收支", "value": 13200597.46},
-                {"Date": "2020", "series": "所得税", "value": 206026555.9},
-                {"Date": "2021", "series": "净利润", "value": 1703994570.57},
-                {"Date": "2021", "series": "营业利润", "value": 1897577353},
-                {"Date": "2021", "series": "营业外收支", "value": -4905217.13},
-                {"Date": "2021", "series": "所得税", "value": 188677565.3},
-                {"Date": "2022", "series": "净利润", "value": 3695435858.45},
-                {"Date": "2022", "series": "营业利润", "value": 4141144503},
-                {"Date": "2022", "series": "营业外收支", "value": -7182892.85},
-                {"Date": "2022", "series": "所得税", "value": 438525751.7}
-              ]
+                "values": [
+                    { "Date": "2014", "series": "净利润", "value": 283286523.03 },
+                    { "Date": "2014", "series": "营业利润", "value": 278788487.5 },
+                    { "Date": "2014", "series": "营业外收支", "value": 46869895.06 },
+                    { "Date": "2014", "series": "所得税", "value": 42371859.53 },
+                    { "Date": "2015", "series": "净利润", "value": 426110848.49 },
+                    { "Date": "2015", "series": "营业利润", "value": 443563764.8 },
+                    { "Date": "2015", "series": "营业外收支", "value": 48946384.64 },
+                    { "Date": "2015", "series": "所得税", "value": 66399300.95 },
+                    { "Date": "2016", "series": "净利润", "value": 546129904.26 },
+                    { "Date": "2016", "series": "营业利润", "value": 613286547.9 },
+                    { "Date": "2016", "series": "营业外收支", "value": 54849162.06 },
+                    { "Date": "2016", "series": "所得税", "value": 122005805.7 },
+                    { "Date": "2017", "series": "净利润", "value": 1014320331.56 },
+                    { "Date": "2017", "series": "营业利润", "value": 1145291896 },
+                    { "Date": "2017", "series": "营业外收支", "value": 16488840.46 },
+                    { "Date": "2017", "series": "所得税", "value": 147460404.9 },
+                    { "Date": "2018", "series": "净利润", "value": 817291291.59 },
+                    { "Date": "2018", "series": "营业利润", "value": 912426356.4 },
+                    { "Date": "2018", "series": "营业外收支", "value": 10213655.49 },
+                    { "Date": "2018", "series": "所得税", "value": 105348720.3 },
+                    { "Date": "2019", "series": "净利润", "value": 911526331.73 },
+                    { "Date": "2019", "series": "营业利润", "value": 1047816873 },
+                    { "Date": "2019", "series": "营业外收支", "value": -16114218.87 },
+                    { "Date": "2019", "series": "所得税", "value": 120176322.4 },
+                    { "Date": "2020", "series": "净利润", "value": 1975515328.56 },
+                    { "Date": "2020", "series": "营业利润", "value": 2168341287 },
+                    { "Date": "2020", "series": "营业外收支", "value": 13200597.46 },
+                    { "Date": "2020", "series": "所得税", "value": 206026555.9 },
+                    { "Date": "2021", "series": "净利润", "value": 1703994570.57 },
+                    { "Date": "2021", "series": "营业利润", "value": 1897577353 },
+                    { "Date": "2021", "series": "营业外收支", "value": -4905217.13 },
+                    { "Date": "2021", "series": "所得税", "value": 188677565.3 },
+                    { "Date": "2022", "series": "净利润", "value": 3695435858.45 },
+                    { "Date": "2022", "series": "营业利润", "value": 4141144503 },
+                    { "Date": "2022", "series": "营业外收支", "value": -7182892.85 },
+                    { "Date": "2022", "series": "所得税", "value": 438525751.7 }
+                ]
             },
             "transform": [
-              {
-                "filter": "datum.series == '净利润' || datum.series == '营业利润' || datum.series == '营业外收支' || datum.series == '所得税'"
-              }
+                {
+                    "filter": "datum.series == '净利润' || datum.series == '营业利润' || datum.series == '营业外收支' || datum.series == '所得税'"
+                }
             ],
             "encoding": {
-              "x": {
-                "field": "Date",
-                "type": "ordinal",
-                "title": "年份"
-              },
-              "tooltip": [
-                {"field": "Date", "type": "ordinal", "title": "年份"},
-                {"field": "series", "type": "nominal", "title": "指标"},
-                {"field": "value", "type": "quantitative", "title": "金额", "format": ".2f"}
-              ]
+                "x": {
+                    "field": "Date",
+                    "type": "ordinal",
+                    "title": "年份"
+                },
+                "tooltip": [
+                    { "field": "Date", "type": "ordinal", "title": "年份" },
+                    { "field": "series", "type": "nominal", "title": "指标" },
+                    { "field": "value", "type": "quantitative", "title": "金额", "format": ".2f" }
+                ]
             },
             "layer": [
-              {
-                "mark": "line",
-                "encoding": {
-                  "y": {
-                    "field": "value",
-                    "type": "quantitative",
-                    "title": "金额 (万元)",
-                    "scale": {"zero": false}
-                  },
-                  "color": {
-                    "field": "series",
-                    "type": "nominal",
-                    "title": "财务指标",
-                    "scale": {
-                      "domain": ["净利润", "营业利润", "营业外收支", "所得税"],
-                      "range": ["#ff7f0e", "#AAC9FC", "#C1EEB2", "#C5BDFD"]
+                {
+                    "mark": "line",
+                    "encoding": {
+                        "y": {
+                            "field": "value",
+                            "type": "quantitative",
+                            "title": "金额 (万元)",
+                            "scale": { "zero": false }
+                        },
+                        "color": {
+                            "field": "series",
+                            "type": "nominal",
+                            "title": "财务指标",
+                            "scale": {
+                                "domain": ["净利润", "营业利润", "营业外收支", "所得税"],
+                                "range": ["#ff7f0e", "#AAC9FC", "#C1EEB2", "#C5BDFD"]
+                            }
+                        }
                     }
-                  }
+                },
+                {
+                    "mark": {
+                        "type": "line",
+                        "point": {
+                            "filled": false,
+                            "fill": "white",
+                            "stroke": "lightgrey",
+                            "strokeWidth": 1,
+                            "size": 5
+                        }
+                    },
+                    "encoding": {
+                        "y": {
+                            "field": "value",
+                            "type": "quantitative",
+                            "axis": {
+                                "format": "s"
+                            }
+                        },
+                        "color": {
+                            "field": "series",
+                            "type": "nominal"
+                        }
+                    }
                 }
-              },
-              {
-                "mark": {
-                          "type": "line",
-                          "point": {
-                              "filled": false,
-                              "fill": "white",
-                              "stroke": "lightgrey",
-                              "strokeWidth": 1,
-                              "size": 5
-                          }
-                      },
-                "encoding": {
-                  "y": {
-                    "field": "value",
-                    "type": "quantitative",
-                    "axis": {
-                            "format": "s"
-                          }
-                  },
-                  "color": {
-                    "field": "series",
-                    "type": "nominal"
-                  }
-                }
-              }
             ],
             "config": {
-              "axisY": {
-                "labelColor": "#666",
-                "titleColor": "#666"
-              }
-            }
+                "axisY": {
+                    "labelColor": "#666",
+                    "titleColor": "#666"
+                }
+            },
+            "insights": [
+                { "year": 2014, "describe": "净利润最少，为 283,286,523.03 元" },
+                { "year": 2022, "describe": "净利润最多，为 3,695,435,858.45 元" },
+                { "year": 2021, "describe": "净利润波动最大，从2020年的 1,975,515,328.56 元增加到 1,703,994,570.57 元，增长率约为 -13.7%" }
+            ]
         },
         '净资产收益率': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -321,7 +331,12 @@ export const getNodeConfig = (label) => {
                         "format": ".2%"
                     }
                 ]
-            }
+            },
+            "insights": [
+                { "year": 2016, "describe": "净资产收益率最少，为 0.0724" },
+                { "year": 2022, "describe": "净资产收益率最多，为 0.1863" },
+                { "year": 2020, "describe": "净资产收益率波动最大，从2019年的 0.1002 增加到 0.1753，增长率约为 74.9%" }
+            ]
         },
         '流动资产': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -420,6 +435,11 @@ export const getNodeConfig = (label) => {
                 {
                     "filter": { "selection": "brush" }
                 }
+            ],
+            "insights": [
+                { "year": 2014, "describe": "流动资产最少，为 4,432,848,117 元" },
+                { "year": 2022, "describe": "流动资产最多，为 51,993,725,437 元" },
+                { "year": 2021, "describe": "流动资产波动最大，从2020年的 23,253,041,619 元增加到 36,307,432,822 元，增长率约为 56%" }
             ]
         },
         '权益乘数': {
@@ -428,66 +448,71 @@ export const getNodeConfig = (label) => {
             "width": "container",
             "height": "container",
             "data": {
-              "values": [
-                { "年份": "2022", "值": 3.1223704976063242 },
-                { "年份": "2021", "值": 2.5647124417346343 },
-                { "年份": "2020", "值": 2.5774242667417426 },
-                { "年份": "2019", "值": 2.6064672066574786 },
-                { "年份": "2018", "值": 2.372426781982076 },
-                { "年份": "2017", "值": 2.3135008442425375 },
-                { "年份": "2016", "值": 1.9546369420619019 },
-                { "年份": "2015", "值": 2.391973160983487 },
-                { "年份": "2014", "值": 2.0618327931912215 }
-              ]
+                "values": [
+                    { "年份": "2022", "值": 3.1223704976063242 },
+                    { "年份": "2021", "值": 2.5647124417346343 },
+                    { "年份": "2020", "值": 2.5774242667417426 },
+                    { "年份": "2019", "值": 2.6064672066574786 },
+                    { "年份": "2018", "值": 2.372426781982076 },
+                    { "年份": "2017", "值": 2.3135008442425375 },
+                    { "年份": "2016", "值": 1.9546369420619019 },
+                    { "年份": "2015", "值": 2.391973160983487 },
+                    { "年份": "2014", "值": 2.0618327931912215 }
+                ]
             },
             "mark": "bar",
             "encoding": {
-              "x": {
-                "field": "年份",
-                "type": "ordinal",
-                "title": "年份",
-                "axis": {
-                  "labelAngle": 0,
-                  "labelFontSize": 12,
-                  "titleFontSize": 14
-                }
-              },
-              "y": {
-                "field": "值",
-                "type": "quantitative",
-                "title": "权益乘数",
-                "axis": {
-                  "format": ".2f",
-                  "labelFontSize": 12,
-                  "titleFontSize": 14
-                }
-              },
-              "tooltip": [
-                { "field": "年份", "type": "ordinal", "title": "年份" },
-                { "field": "值", "type": "quantitative", "title": "权益乘数", "format": ".2f" }
-              ],
-              "color": {
-                "field": "值",
-                "type": "quantitative",
-                "scale": {
-                  "scheme": "blues"
+                "x": {
+                    "field": "年份",
+                    "type": "ordinal",
+                    "title": "年份",
+                    "axis": {
+                        "labelAngle": 0,
+                        "labelFontSize": 12,
+                        "titleFontSize": 14
+                    }
                 },
-                "legend": {
-                  "title": "数值",
-                  "labelFontSize": 12,
-                  "titleFontSize": 14
+                "y": {
+                    "field": "值",
+                    "type": "quantitative",
+                    "title": "权益乘数",
+                    "axis": {
+                        "format": ".2f",
+                        "labelFontSize": 12,
+                        "titleFontSize": 14
+                    }
+                },
+                "tooltip": [
+                    { "field": "年份", "type": "ordinal", "title": "年份" },
+                    { "field": "值", "type": "quantitative", "title": "权益乘数", "format": ".2f" }
+                ],
+                "color": {
+                    "field": "值",
+                    "type": "quantitative",
+                    "scale": {
+                        "scheme": "blues"
+                    },
+                    "legend": {
+                        "title": "数值",
+                        "labelFontSize": 12,
+                        "titleFontSize": 14
+                    }
                 }
-              }
             },
             "selection": {
-              "brush": {
-                "type": "interval",
-                "encodings": ["x"],
-                "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-                "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-                "zoom": "wheel![event.shiftKey]"
-              }
-            }
+                "brush": {
+                    "type": "interval",
+                    "encodings": ["x"],
+                    "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+                    "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+                    "zoom": "wheel![event.shiftKey]"
+                }
+            },
+            "insights": [
+                { "year": 2016, "describe": "权益乘数最少，为 1.9546" },
+                { "year": 2022, "describe": "权益乘数最多，为 3.1224" },
+                { "year": 2016, "describe": "权益乘数波动最大，从2016年的 1.9546 增加到2017年的 2.3135，增长率约为 18.34%" }
+            ]
         },
         '所得税费用': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -495,96 +520,101 @@ export const getNodeConfig = (label) => {
             "width": "container",
             "height": "container",
             "data": {
-                          "values": [
-                              {
-                                  "年份": "2022",
-                                  "标签": "所得税",
-                                  "值": 438525751.7
-                              },
-                              {
-                                  "年份": "2021",
-                                  "标签": "所得税",
-                                  "值": 188677565.3
-                              },
-                              {
-                                  "年份": "2020",
-                                  "标签": "所得税",
-                                  "值": 206026555.9
-                              },
-                              {
-                                  "年份": "2019",
-                                  "标签": "所得税",
-                                  "值": 120176322.4
-                              },
-                              {
-                                  "年份": "2018",
-                                  "标签": "所得税",
-                                  "值": 105348720.3
-                              },
-                              {
-                                  "年份": "2017",
-                                  "标签": "所得税",
-                                  "值": 147460404.9
-                              },
-                              {
-                                  "年份": "2016",
-                                  "标签": "所得税",
-                                  "值": 122005805.7
-                              },
-                              {
-                                  "年份": "2015",
-                                  "标签": "所得税",
-                                  "值": 66399300.95
-                              },
-                              {
-                                  "年份": "2014",
-                                  "标签": "所得税",
-                                  "值": 42371859.53
-                              }
-                          ]
-                      },
+                "values": [
+                    {
+                        "年份": "2022",
+                        "标签": "所得税",
+                        "值": 438525751.7
+                    },
+                    {
+                        "年份": "2021",
+                        "标签": "所得税",
+                        "值": 188677565.3
+                    },
+                    {
+                        "年份": "2020",
+                        "标签": "所得税",
+                        "值": 206026555.9
+                    },
+                    {
+                        "年份": "2019",
+                        "标签": "所得税",
+                        "值": 120176322.4
+                    },
+                    {
+                        "年份": "2018",
+                        "标签": "所得税",
+                        "值": 105348720.3
+                    },
+                    {
+                        "年份": "2017",
+                        "标签": "所得税",
+                        "值": 147460404.9
+                    },
+                    {
+                        "年份": "2016",
+                        "标签": "所得税",
+                        "值": 122005805.7
+                    },
+                    {
+                        "年份": "2015",
+                        "标签": "所得税",
+                        "值": 66399300.95
+                    },
+                    {
+                        "年份": "2014",
+                        "标签": "所得税",
+                        "值": 42371859.53
+                    }
+                ]
+            },
             "selection": {
-              "highlight": {
-                "type": "single",
-                "fields": ["年份"],
-                "bind": "legend",
-                "empty": "none",
-                "on": "click"
-              }
+                "highlight": {
+                    "type": "single",
+                    "fields": ["年份"],
+                    "bind": "legend",
+                    "empty": "none",
+                    "on": "click"
+                }
             },
             "encoding": {
-              "x": {
-                "field": "年份",
-                "type": "ordinal",
-                "title": "年份",
-                "axis": {
-                  "labelOverlap": "parity"
-                }
-              },
-              "y": {
-                "field": "值",
-                "type": "quantitative",
-                "title": "所得税费用的值 (元)",
-                "axis": {
-                  "format": "s"
-                }
-              },
-              "tooltip": [
-                {"field": "年份", "type": "ordinal", "title": "年份"},
-                {"field": "值", "type": "quantitative", "title": "所得税费用", "format": ",.2f"}
-              ],
-              "color": {
-                "condition": {
-                  "selection": "highlight",
-                  "value": "#9689FC"
+                "x": {
+                    "field": "年份",
+                    "type": "ordinal",
+                    "title": "年份",
+                    "axis": {
+                        "labelOverlap": "parity"
+                    }
                 },
-                "value": "#C5BDFD"
-              }
+                "y": {
+                    "field": "值",
+                    "type": "quantitative",
+                    "title": "所得税费用的值 (元)",
+                    "axis": {
+                        "format": "s"
+                    }
+                },
+                "tooltip": [
+                    { "field": "年份", "type": "ordinal", "title": "年份" },
+                    { "field": "值", "type": "quantitative", "title": "所得税费用", "format": ",.2f" }
+                ],
+                "color": {
+                    "condition": {
+                        "selection": "highlight",
+                        "value": "#9689FC"
+                    },
+                    "value": "#C5BDFD"
+                }
             },
             "mark": {
-              "type": "bar",
-              "cursor": "pointer"
-            }
+                "type": "bar",
+                "cursor": "pointer"
+            },
+            "insights": [
+                { "year": 2014, "describe": "所得税费用最少，为 42,371,859.53 元" },
+                { "year": 2022, "describe": "所得税费用最多，为 438,525,751.7 元" },
+                { "year": 2021, "describe": "所得税费用波动最大，从2020年的 206,026,555.9 元增加到 188,677,565.3 元，增长率约为 -8.42%" }
+            ]
         },
         '销售净利率': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -592,66 +622,71 @@ export const getNodeConfig = (label) => {
             "width": "container",
             "height": "container",
             "data": {
-              "values": [
-                { "年份": "2022", "标签": "销售净利率", "值": 0.09179556114669683 },
-                { "年份": "2021", "标签": "销售净利率", "值": 0.0705979574770763 },
-                { "年份": "2020", "标签": "销售净利率", "值": 0.10243451555565215 },
-                { "年份": "2019", "标签": "销售净利率", "值": 0.070099444271013 },
-                { "年份": "2018", "标签": "销售净利率", "值": 0.07882116419210977 },
-                { "年份": "2017", "标签": "销售净利率", "值": 0.11414736381296457 },
-                { "年份": "2016", "标签": "销售净利率", "值": 0.09096612413880852 },
-                { "年份": "2015", "标签": "销售净利率", "值": 0.09325624800412555 },
-                { "年份": "2014", "标签": "销售净利率", "值": 0.09250935215832311 }
-              ]
+                "values": [
+                    { "年份": "2022", "标签": "销售净利率", "值": 0.09179556114669683 },
+                    { "年份": "2021", "标签": "销售净利率", "值": 0.0705979574770763 },
+                    { "年份": "2020", "标签": "销售净利率", "值": 0.10243451555565215 },
+                    { "年份": "2019", "标签": "销售净利率", "值": 0.070099444271013 },
+                    { "年份": "2018", "标签": "销售净利率", "值": 0.07882116419210977 },
+                    { "年份": "2017", "标签": "销售净利率", "值": 0.11414736381296457 },
+                    { "年份": "2016", "标签": "销售净利率", "值": 0.09096612413880852 },
+                    { "年份": "2015", "标签": "销售净利率", "值": 0.09325624800412555 },
+                    { "年份": "2014", "标签": "销售净利率", "值": 0.09250935215832311 }
+                ]
             },
             "mark": "bar",
             "encoding": {
-              "x": {
-                "field": "年份",
-                "type": "ordinal",
-                "title": "年份",
-                "axis": {
-                  "labelAngle": 0,
-                  "labelFontSize": 12,
-                  "titleFontSize": 14
-                }
-              },
-              "y": {
-                "field": "值",
-                "type": "quantitative",
-                "title": "销售净利率",
-                "axis": {
-                  "format": ".2f",
-                  "labelFontSize": 12,
-                  "titleFontSize": 14
-                }
-              },
-              "tooltip": [
-                { "field": "年份", "type": "ordinal", "title": "年份" },
-                { "field": "值", "type": "quantitative", "title": "销售净利率", "format": ".4f" }
-              ],
-              "color": {
-                "field": "值",
-                "type": "quantitative",
-                "scale": {
-                  "scheme": "lightorange"
+                "x": {
+                    "field": "年份",
+                    "type": "ordinal",
+                    "title": "年份",
+                    "axis": {
+                        "labelAngle": 0,
+                        "labelFontSize": 12,
+                        "titleFontSize": 14
+                    }
                 },
-                "legend": {
-                  "title": "数值",
-                  "labelFontSize": 12,
-                  "titleFontSize": 14
+                "y": {
+                    "field": "值",
+                    "type": "quantitative",
+                    "title": "销售净利率",
+                    "axis": {
+                        "format": ".2f",
+                        "labelFontSize": 12,
+                        "titleFontSize": 14
+                    }
+                },
+                "tooltip": [
+                    { "field": "年份", "type": "ordinal", "title": "年份" },
+                    { "field": "值", "type": "quantitative", "title": "销售净利率", "format": ".4f" }
+                ],
+                "color": {
+                    "field": "值",
+                    "type": "quantitative",
+                    "scale": {
+                        "scheme": "lightorange"
+                    },
+                    "legend": {
+                        "title": "数值",
+                        "labelFontSize": 12,
+                        "titleFontSize": 14
+                    }
                 }
-              }
             },
             "selection": {
-              "brush": {
-                "type": "interval",
-                "encodings": ["x"],
-                "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-                "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-                "zoom": "wheel![event.shiftKey]"
-              }
-            }
+                "brush": {
+                    "type": "interval",
+                    "encodings": ["x"],
+                    "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+                    "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+                    "zoom": "wheel![event.shiftKey]"
+                }
+            },
+            "insights": [
+                { "year": 2019, "describe": "销售净利率最少，为 0.0701" },
+                { "year": 2017, "describe": "销售净利率最多，为 0.1141" },
+                { "year": 2017, "describe": "销售净利率波动最大，从2016年的 0.0910 增加到 0.1141，增长率约为 25.5%" }
+            ]
         },
         '营业利润': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -659,60 +694,65 @@ export const getNodeConfig = (label) => {
             "width": "container",
             "height": "container",
             "data": {
-              "values": [
-                {"年份": "2022", "标签": "营业利润", "值": 4141144503.0},
-                {"年份": "2021", "标签": "营业利润", "值": 1897577353.0},
-                {"年份": "2020", "标签": "营业利润", "值": 2168341287.0},
-                {"年份": "2019", "标签": "营业利润", "值": 1047816873.0},
-                {"年份": "2018", "标签": "营业利润", "值": 912426356.4},
-                {"年份": "2017", "标签": "营业利润", "值": 1145291896.0},
-                {"年份": "2016", "标签": "营业利润", "值": 613286547.9},
-                {"年份": "2015", "标签": "营业利润", "值": 443563764.8},
-                {"年份": "2014", "标签": "营业利润", "值": 278788487.5}
-              ]
+                "values": [
+                    { "年份": "2022", "标签": "营业利润", "值": 4141144503.0 },
+                    { "年份": "2021", "标签": "营业利润", "值": 1897577353.0 },
+                    { "年份": "2020", "标签": "营业利润", "值": 2168341287.0 },
+                    { "年份": "2019", "标签": "营业利润", "值": 1047816873.0 },
+                    { "年份": "2018", "标签": "营业利润", "值": 912426356.4 },
+                    { "年份": "2017", "标签": "营业利润", "值": 1145291896.0 },
+                    { "年份": "2016", "标签": "营业利润", "值": 613286547.9 },
+                    { "年份": "2015", "标签": "营业利润", "值": 443563764.8 },
+                    { "年份": "2014", "标签": "营业利润", "值": 278788487.5 }
+                ]
             },
             "selection": {
-              "highlight": {
-                "type": "single",
-                "fields": ["年份"],
-                "bind": "legend",
-                "empty": "none",
-                "on": "click"
-              }
+                "highlight": {
+                    "type": "single",
+                    "fields": ["年份"],
+                    "bind": "legend",
+                    "empty": "none",
+                    "on": "click"
+                }
             },
             "encoding": {
-              "x": {
-                "field": "年份",
-                "type": "ordinal",
-                "title": "年份",
-                "axis": {
-                  "labelOverlap": "parity"
-                }
-              },
-              "y": {
-                "field": "值",
-                "type": "quantitative",
-                "title": "营业利润的值 (元)",
-                "axis": {
-                  "format": "s"
-                }
-              },
-              "tooltip": [
-                {"field": "年份", "type": "ordinal", "title": "年份"},
-                {"field": "值", "type": "quantitative", "title": "营业利润", "format": ",.2f"}
-              ],
-              "color": {
-                "condition": {
-                  "selection": "highlight",
-                  "value": "steelblue"
+                "x": {
+                    "field": "年份",
+                    "type": "ordinal",
+                    "title": "年份",
+                    "axis": {
+                        "labelOverlap": "parity"
+                    }
                 },
-                "value": "#AAC9FC"
-              }
+                "y": {
+                    "field": "值",
+                    "type": "quantitative",
+                    "title": "营业利润的值 (元)",
+                    "axis": {
+                        "format": "s"
+                    }
+                },
+                "tooltip": [
+                    { "field": "年份", "type": "ordinal", "title": "年份" },
+                    { "field": "值", "type": "quantitative", "title": "营业利润", "format": ",.2f" }
+                ],
+                "color": {
+                    "condition": {
+                        "selection": "highlight",
+                        "value": "steelblue"
+                    },
+                    "value": "#AAC9FC"
+                }
             },
             "mark": {
-              "type": "bar",
-              "cursor": "pointer"
-            }
+                "type": "bar",
+                "cursor": "pointer"
+            },
+            "insights": [
+                { "year": 2014, "describe": "营业利润最少，为 278,788,487.5 元" },
+                { "year": 2022, "describe": "营业利润最多，为 4,141,144,503 元" },
+                { "year": 2021, "describe": "营业利润波动最大，从2020年的 2,168,341,287 元增加到 1,897,577,353 元，增长率约为 -12.5%" }
+            ]
         },
         '营业外收入': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -800,61 +840,66 @@ export const getNodeConfig = (label) => {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "description": "年度非经营性收入及支出",
             "data": {
-              "values": [
-                {"Date": "2014", "Non-operating Income/Expenses": 46869895.06},
-                {"Date": "2015", "Non-operating Income/Expenses": 48946384.64},
-                {"Date": "2016", "Non-operating Income/Expenses": 54849162.06},
-                {"Date": "2017", "Non-operating Income/Expenses": 16488840.46},
-                {"Date": "2018", "Non-operating Income/Expenses": 10213655.49},
-                {"Date": "2019", "Non-operating Income/Expenses": -16114218.87},
-                {"Date": "2020", "Non-operating Income/Expenses": 13200597.46},
-                {"Date": "2021", "Non-operating Income/Expenses": -4905217.13},
-                {"Date": "2022", "Non-operating Income/Expenses": -7182892.85},
-              ]
+                "values": [
+                    { "Date": "2014", "Non-operating Income/Expenses": 46869895.06 },
+                    { "Date": "2015", "Non-operating Income/Expenses": 48946384.64 },
+                    { "Date": "2016", "Non-operating Income/Expenses": 54849162.06 },
+                    { "Date": "2017", "Non-operating Income/Expenses": 16488840.46 },
+                    { "Date": "2018", "Non-operating Income/Expenses": 10213655.49 },
+                    { "Date": "2019", "Non-operating Income/Expenses": -16114218.87 },
+                    { "Date": "2020", "Non-operating Income/Expenses": 13200597.46 },
+                    { "Date": "2021", "Non-operating Income/Expenses": -4905217.13 },
+                    { "Date": "2022", "Non-operating Income/Expenses": -7182892.85 },
+                ]
             },
             "mark": "bar",
             "width": "container",
             "height": "container",
             "encoding": {
-              "x": {
-                "field": "Date",
-                "type": "ordinal",
-                "title": "年份",
-                "axis": {
-                    "labelOverlap": "parity"
-                  },
-                "band": 1.2 // 增加柱的宽度
-              },
-              "y": {
-                "field": "Non-operating Income/Expenses",
-                "type": "quantitative",
-                "title": "营业外收支(元)",
-                "axis": {
-                    "format": "s"
-                  }
-              },
-              "tooltip": [
-                {"field": "Date", "type": "ordinal", "title": "年份"},
-                {"field": "Non-operating Income/Expenses", "type": "quantitative", "title": "营业外收支"}
-              ],
-              "color": {
-                "condition": {
-                  "test": "datum['Non-operating Income/Expenses'] >= 0",
-                  "value": "#C1EEB2"
+                "x": {
+                    "field": "Date",
+                    "type": "ordinal",
+                    "title": "年份",
+                    "axis": {
+                        "labelOverlap": "parity"
+                    },
+                    "band": 1.2 // 增加柱的宽度
                 },
-                "value": "#E9A0D7"
-              }
+                "y": {
+                    "field": "Non-operating Income/Expenses",
+                    "type": "quantitative",
+                    "title": "营业外收支(元)",
+                    "axis": {
+                        "format": "s"
+                    }
+                },
+                "tooltip": [
+                    { "field": "Date", "type": "ordinal", "title": "年份" },
+                    { "field": "Non-operating Income/Expenses", "type": "quantitative", "title": "营业外收支" }
+                ],
+                "color": {
+                    "condition": {
+                        "test": "datum['Non-operating Income/Expenses'] >= 0",
+                        "value": "#C1EEB2"
+                    },
+                    "value": "#E9A0D7"
+                }
             },
             "config": {
-              "axis": {
-                "labelFontSize": 10,
-                "titleFontSize": 12
-              },
-              "bar": {
-                "cornerRadiusTopLeft": 2,
-                "cornerRadiusTopRight": 2
-              }
-            }
+                "axis": {
+                    "labelFontSize": 10,
+                    "titleFontSize": 12
+                },
+                "bar": {
+                    "cornerRadiusTopLeft": 2,
+                    "cornerRadiusTopRight": 2
+                }
+            },
+            "insights": [
+                { "year": 2021, "describe": "营业外收支最少，为 -4,905,217.13 元" },
+                { "year": 2016, "describe": "营业外收支最多，为 54,849,162.06 元" },
+                { "year": 2019, "describe": "营业外收支波动最大，从2018年的 10,213,655.49 元减少到 -16,114,218.87 元，增长率约为 -257.7%" }
+            ]
         },
         '营业总收入': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -862,60 +907,65 @@ export const getNodeConfig = (label) => {
             "width": "container",
             "height": "container",
             "data": {
-    "values": [
-      {"年份": "2022", "标签": "营业总收入", "值": 40257239155.0},
-      {"年份": "2021", "标签": "营业总收入", "值": 24136598727.0},
-      {"年份": "2020", "标签": "营业总收入", "值": 19285641347.0},
-      {"年份": "2019", "标签": "营业总收入", "值": 13003331784.0},
-      {"年份": "2018", "标签": "营业总收入", "值": 10368931999.0},
-      {"年份": "2017", "标签": "营业总收入", "值": 8886060069.0},
-      {"年份": "2016", "标签": "营业总收入", "值": 6003662456.0},
-      {"年份": "2015", "标签": "营业总收入", "值": 4569247183.0},
-      {"年份": "2014", "标签": "营业总收入", "值": 3062247399.0}
-    ]
-  },
+                "values": [
+                    { "年份": "2022", "标签": "营业总收入", "值": 40257239155.0 },
+                    { "年份": "2021", "标签": "营业总收入", "值": 24136598727.0 },
+                    { "年份": "2020", "标签": "营业总收入", "值": 19285641347.0 },
+                    { "年份": "2019", "标签": "营业总收入", "值": 13003331784.0 },
+                    { "年份": "2018", "标签": "营业总收入", "值": 10368931999.0 },
+                    { "年份": "2017", "标签": "营业总收入", "值": 8886060069.0 },
+                    { "年份": "2016", "标签": "营业总收入", "值": 6003662456.0 },
+                    { "年份": "2015", "标签": "营业总收入", "值": 4569247183.0 },
+                    { "年份": "2014", "标签": "营业总收入", "值": 3062247399.0 }
+                ]
+            },
             "selection": {
-              "highlight": {
-                "type": "single",
-                "fields": ["年份"],
-                "bind": "legend",
-                "empty": "none",
-                "on": "click"
-              }
+                "highlight": {
+                    "type": "single",
+                    "fields": ["年份"],
+                    "bind": "legend",
+                    "empty": "none",
+                    "on": "click"
+                }
             },
             "encoding": {
-              "x": {
-                "field": "年份",
-                "type": "ordinal",
-                "title": "年份",
-                "axis": {
-                  "labelOverlap": "parity"
-                }
-              },
-              "y": {
-                "field": "值",
-                "type": "quantitative",
-                "title": "营业总收入的值 (元)",
-                "axis": {
-                  "format": "s"
-                }
-              },
-              "tooltip": [
-                {"field": "年份", "type": "ordinal", "title": "年份"},
-                {"field": "值", "type": "quantitative", "title": "营业总收入", "format": ",.2f"}
-              ],
-              "color": {
-                "condition": {
-                  "selection": "highlight",
-                  "value": "#E58ECF"
+                "x": {
+                    "field": "年份",
+                    "type": "ordinal",
+                    "title": "年份",
+                    "axis": {
+                        "labelOverlap": "parity"
+                    }
                 },
-                "value": "#F2C8E8"
-              }
+                "y": {
+                    "field": "值",
+                    "type": "quantitative",
+                    "title": "营业总收入的值 (元)",
+                    "axis": {
+                        "format": "s"
+                    }
+                },
+                "tooltip": [
+                    { "field": "年份", "type": "ordinal", "title": "年份" },
+                    { "field": "值", "type": "quantitative", "title": "营业总收入", "format": ",.2f" }
+                ],
+                "color": {
+                    "condition": {
+                        "selection": "highlight",
+                        "value": "#E58ECF"
+                    },
+                    "value": "#F2C8E8"
+                }
             },
             "mark": {
-              "type": "bar",
-              "cursor": "pointer"
-            }
+                "type": "bar",
+                "cursor": "pointer"
+            },
+            "insights": [
+                { "year": 2014, "describe": "营业总收入最少，为 3,062,247,399.0 元" },
+                { "year": 2022, "describe": "营业总收入最多，为 40,257,239,155.0 元" },
+                { "year": 2021, "describe": "营业总收入波动最大，从2020年的 19,285,641,347.0 元增加到 24,136,598,727.0 元，增长率约为 25.1%" }
+            ]
         },
         '资产净利率': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -923,65 +973,70 @@ export const getNodeConfig = (label) => {
             "width": "container",
             "height": "container",
             "data": {
-              "values": [
-                {"Date": "2014", "series": "资产净利率", "value": 0.0581},
-                {"Date": "2014", "series": "销售净利率", "value": 0.0925},
-                {"Date": "2014", "series": "资产周转率", "value": 0.6276},
-                {"Date": "2015", "series": "资产净利率", "value": 0.0628},
-                {"Date": "2015", "series": "销售净利率", "value": 0.0933},
-                {"Date": "2015", "series": "资产周转率", "value": 0.6736},
-                {"Date": "2016", "series": "资产净利率", "value": 0.0469},
-                {"Date": "2016", "series": "销售净利率", "value": 0.0910},
-                {"Date": "2016", "series": "资产周转率", "value": 0.5150},
-                {"Date": "2017", "series": "资产净利率", "value": 0.0624},
-                {"Date": "2017", "series": "销售净利率", "value": 0.1141},
-                {"Date": "2017", "series": "资产周转率", "value": 0.5469},
-                {"Date": "2018", "series": "资产净利率", "value": 0.0442},
-                {"Date": "2018", "series": "销售净利率", "value": 0.0788},
-                {"Date": "2018", "series": "资产周转率", "value": 0.5607},
-                {"Date": "2019", "series": "资产净利率", "value": 0.0399},
-                {"Date": "2019", "series": "销售净利率", "value": 0.0701},
-                {"Date": "2019", "series": "资产周转率", "value": 0.5698},
-                {"Date": "2020", "series": "资产净利率", "value": 0.0705},
-                {"Date": "2020", "series": "销售净利率", "value": 0.1024},
-                {"Date": "2020", "series": "资产周转率", "value": 0.6887},
-                {"Date": "2021", "series": "资产净利率", "value": 0.0398},
-                {"Date": "2021", "series": "销售净利率", "value": 0.0706},
-                {"Date": "2021", "series": "资产周转率", "value": 0.5634},
-                {"Date": "2022", "series": "资产净利率", "value": 0.0600},
-                {"Date": "2022", "series": "销售净利率", "value": 0.0918},
-                {"Date": "2022", "series": "资产周转率", "value": 0.6532},
-                {"Date": "2023", "series": "资产净利率", "value": 0.0361},
-                {"Date": "2023", "series": "销售净利率", "value": 0.0533},
-                {"Date": "2023", "series": "资产周转率", "value": 0.6767}
-              ]
+                "values": [
+                    { "Date": "2014", "series": "资产净利率", "value": 0.0581 },
+                    { "Date": "2014", "series": "销售净利率", "value": 0.0925 },
+                    { "Date": "2014", "series": "资产周转率", "value": 0.6276 },
+                    { "Date": "2015", "series": "资产净利率", "value": 0.0628 },
+                    { "Date": "2015", "series": "销售净利率", "value": 0.0933 },
+                    { "Date": "2015", "series": "资产周转率", "value": 0.6736 },
+                    { "Date": "2016", "series": "资产净利率", "value": 0.0469 },
+                    { "Date": "2016", "series": "销售净利率", "value": 0.0910 },
+                    { "Date": "2016", "series": "资产周转率", "value": 0.5150 },
+                    { "Date": "2017", "series": "资产净利率", "value": 0.0624 },
+                    { "Date": "2017", "series": "销售净利率", "value": 0.1141 },
+                    { "Date": "2017", "series": "资产周转率", "value": 0.5469 },
+                    { "Date": "2018", "series": "资产净利率", "value": 0.0442 },
+                    { "Date": "2018", "series": "销售净利率", "value": 0.0788 },
+                    { "Date": "2018", "series": "资产周转率", "value": 0.5607 },
+                    { "Date": "2019", "series": "资产净利率", "value": 0.0399 },
+                    { "Date": "2019", "series": "销售净利率", "value": 0.0701 },
+                    { "Date": "2019", "series": "资产周转率", "value": 0.5698 },
+                    { "Date": "2020", "series": "资产净利率", "value": 0.0705 },
+                    { "Date": "2020", "series": "销售净利率", "value": 0.1024 },
+                    { "Date": "2020", "series": "资产周转率", "value": 0.6887 },
+                    { "Date": "2021", "series": "资产净利率", "value": 0.0398 },
+                    { "Date": "2021", "series": "销售净利率", "value": 0.0706 },
+                    { "Date": "2021", "series": "资产周转率", "value": 0.5634 },
+                    { "Date": "2022", "series": "资产净利率", "value": 0.0600 },
+                    { "Date": "2022", "series": "销售净利率", "value": 0.0918 },
+                    { "Date": "2022", "series": "资产周转率", "value": 0.6532 },
+                    { "Date": "2023", "series": "资产净利率", "value": 0.0361 },
+                    { "Date": "2023", "series": "销售净利率", "value": 0.0533 },
+                    { "Date": "2023", "series": "资产周转率", "value": 0.6767 }
+                ]
             },
             "mark": "bar",
             "encoding": {
-              "x": {
-                "field": "Date",
-                "type": "ordinal",
-                "title": "Year",
-                "axis": {"labelAngle": 0}
-              },
-              "y": {
-                "field": "value",
-                "type": "quantitative",
-                "title": "Value",
-                "stack": "zero"
-              },
-              "color": {
-                "field": "series",
-                "type": "nominal",
-                "scale": {"domain": ["资产净利率", "销售净利率", "资产周转率"], "range": ["#D6ACF2", "#ACC8F2", "#EBF2AC"]},
-                "title": "Series"
-              },
-              "tooltip": [
-                {"field": "Date", "type": "ordinal", "title": "Year"},
-                {"field": "series", "type": "nominal", "title": "Indicator"},
-                {"field": "value", "type": "quantitative", "title": "Value", "format": ".4f"}
-              ]
-            }
+                "x": {
+                    "field": "Date",
+                    "type": "ordinal",
+                    "title": "Year",
+                    "axis": { "labelAngle": 0 }
+                },
+                "y": {
+                    "field": "value",
+                    "type": "quantitative",
+                    "title": "Value",
+                    "stack": "zero"
+                },
+                "color": {
+                    "field": "series",
+                    "type": "nominal",
+                    "scale": { "domain": ["资产净利率", "销售净利率", "资产周转率"], "range": ["#D6ACF2", "#ACC8F2", "#EBF2AC"] },
+                    "title": "Series"
+                },
+                "tooltip": [
+                    { "field": "Date", "type": "ordinal", "title": "Year" },
+                    { "field": "series", "type": "nominal", "title": "Indicator" },
+                    { "field": "value", "type": "quantitative", "title": "Value", "format": ".4f" }
+                ]
+            },
+            "insights": [
+                { "year": 2019, "describe": "资产净利率最少，为 0.0399" },
+                { "year": 2020, "describe": "资产净利率最多，为 0.0705" },
+                { "year": 2020, "describe": "资产净利率波动最大，从2019年的 0.0399 增加到 0.0705，增长率约为 76.7%" }
+            ]
         },
         '资产周转率': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -1080,7 +1135,12 @@ export const getNodeConfig = (label) => {
                     { "field": "年份", "type": "ordinal", "title": "年份" },
                     { "field": "值", "type": "quantitative", "title": "股东权益", "format": ",.2f" }
                 ]
-            }
+            },
+            "insights": [
+                { "year": 2016, "describe": "资产周转率最少，为 0.5150" },
+                { "year": 2020, "describe": "资产周转率最多，为 0.6887" },
+                { "year": 2020, "describe": "资产周转率波动最大，从2019年的 0.5698 增加到 0.6887，增长率约为 20.9%" }
+            ]
         },
         '总资产': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -1152,7 +1212,12 @@ export const getNodeConfig = (label) => {
                     "binSpacing": 0,
                     "align": "center"
                 }
-            }
+            },
+            "insights": [
+                { "year": 2014, "describe": "总资产最少，为 4,879,350,944.0 元" },
+                { "year": 2022, "describe": "总资产最多，为 61,626,211,527.0 元" },
+                { "year": 2021, "describe": "总资产波动最大，从2020年的 28,002,933,995.0 元增加到 42,840,130,915.0 元，增长率约为 53.0%" }
+            ]
         },
         '股东权益': {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -1215,7 +1280,12 @@ export const getNodeConfig = (label) => {
                     { "field": "年份", "type": "ordinal", "title": "年份" },
                     { "field": "值", "type": "quantitative", "title": "股东权益", "format": ",.2f" }
                 ]
-            }
+            },
+            "insights": [
+                { "year": 2014, "describe": "股东权益最少，为 2,366,511,465.0 元" },
+                { "year": 2022, "describe": "股东权益最多，为 19,736,995,201.0 元" },
+                { "year": 2021, "describe": "股东权益波动最大，从2020年的 10,864,697,115.0 元增加到 16,703,678,049.0 元，增长率约为 53.7%" }
+            ]
         }
     };
     return configs[label] || {

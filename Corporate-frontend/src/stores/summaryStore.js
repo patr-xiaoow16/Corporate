@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 export const data2022 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '1.92%',
+    subLabel: '18.6%',
     children: [{
         id: 'child-a',
         label: '资产净利率',
@@ -78,7 +78,7 @@ export const data2022 = {
 export const data2021 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '1.55%',
+    subLabel: '10.0%',
     children: [
         {
             id: 'child-a',
@@ -114,7 +114,7 @@ export const data2021 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '24,136,598,727'
                         }
                     ]
@@ -173,7 +173,7 @@ export const data2021 = {
 export const data2020 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '2.74%',
+    subLabel: '17.5%',
     children: [
         {
             id: 'child-a',
@@ -209,7 +209,7 @@ export const data2020 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '19,285,641,347'
                         }
                     ]
@@ -268,7 +268,7 @@ export const data2020 = {
 export const data2019 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '1.53%',
+    subLabel: '10.0%',
     children: [
         {
             id: 'child-a',
@@ -304,7 +304,7 @@ export const data2019 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '13,003,331,784'
                         }
                     ]
@@ -363,7 +363,7 @@ export const data2019 = {
 export const data2018 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '1.86%',
+    subLabel: '10.1%',
     children: [
         {
             id: 'child-a',
@@ -399,7 +399,7 @@ export const data2018 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '10,368,931,999'
                         }
                     ]
@@ -458,7 +458,7 @@ export const data2018 = {
 export const data2017 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '2.70%',
+    subLabel: '13.9%',
     children: [
         {
             id: 'child-a',
@@ -494,7 +494,7 @@ export const data2017 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '8,886,060,069'
                         }
                     ]
@@ -553,7 +553,7 @@ export const data2017 = {
 export const data2016 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '2.40%',
+    subLabel: '7.2%',
     children: [
         {
             id: 'child-a',
@@ -589,7 +589,7 @@ export const data2016 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '6,003,662,456'
                         }
                     ]
@@ -648,7 +648,7 @@ export const data2016 = {
 export const data2015 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '2.63%',
+    subLabel: '11.0%',
     children: [
         {
             id: 'child-a',
@@ -684,7 +684,7 @@ export const data2015 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '4,569,247,183'
                         }
                     ]
@@ -743,7 +743,7 @@ export const data2015 = {
 export const data2014 = {
     id: 'root',
     label: '净资产收益率',
-    subLabel: '2.82%',
+    subLabel: '8.0%',
     children: [
         {
             id: 'child-a',
@@ -779,7 +779,7 @@ export const data2014 = {
                         },
                         {
                             id: 'child-a-a-b',
-                            label: '营业收入',
+                            label: '营业总收入',
                             subLabel: '3,062,247,399'
                         }
                     ]
@@ -850,13 +850,6 @@ export const useSummaryStore = defineStore('summaryStore', {
         selectedYear: 2022
     }),
     actions: {
-        // updateChartData(year, event, value) {
-        //     // 以确保响应性的方式更新对象
-        //     this.chartData[year] = { ...this.chartData[year], event, data: value };
-        //     this.selectedYear = year;
-        //     console.log("Updated chartData for year:", year, "to:", this.chartData[year]);
-        //     console.log("selectedYear:", year);
-        // }
         updateSelectedYear(year) {
             // 检查该年份是否存在于已知数据中
             if (Object.keys(this.chartData).includes(year)) {

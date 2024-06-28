@@ -12,6 +12,7 @@
 //   }
 // });
 
+// chartStore.js
 import { defineStore } from 'pinia';
 import { generateChartId } from './generateId';
 
@@ -25,6 +26,7 @@ export const useChartsStore = defineStore('chartsStore', {
                 ...chart,
                 id: chart.id || generateChartId() //生成一个新的id
             };
+            chartWithId.timestamp = new Date().toISOString(); // 添加时间戳
             this.chartsJson.push(chartWithId); //将带有id的图表添加到chartsJson
         },
         setCharts(charts) {

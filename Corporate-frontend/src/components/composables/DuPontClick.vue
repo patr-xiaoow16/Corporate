@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="dupont-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <div>DuPont analysis</div>
+            <div>杜邦分析</div>
 
             <a-space style="margin-top: -10px;"> <!-- 调整这里的 margin-top 值以向上移动 -->
                 <a-select v-model:value="selectedYear" :style="{ width: '120px' }" @change="handleChange"

@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="prediction-header">
-            Summary
+            总览
         </div>
         <!-- 图表容器 -->
         <section class="wrapper trend-wrapper">
@@ -68,15 +68,16 @@ onMounted(async () => {
         label: {
             formatter: (text) => {
                 const value = parseFloat(text);
-                if (value >= 1000000000) {
-                    return `${(value / 1000000000).toFixed(1)}B`;  // 单位为“十亿”
-                } else if (value < 1 && value !== 0) {
-                    return `${(value / 1000000000).toFixed(1)}B`;  // 单位为“十亿”
-                } else if (value === 0) {
-                    return '0';  // 确保零值显示为 '0'
-                } else {
-                    return `${value}`;  // 不需要转换的保持原样
-                }
+                return `${value}`;  // 直接返回数值的字符串形式
+                // if (value >= 1000000000) {
+                //     return `${(value / 1000000000).toFixed(1)}B`;  // 单位为“十亿”
+                // } else if (value < 1 && value !== 0) {
+                //     return `${(value / 1000000000).toFixed(1)}B`;  // 单位为“十亿”
+                // } else if (value === 0) {
+                //     return '0';  // 确保零值显示为 '0'
+                // } else {
+                //     return `${value}`;  // 不需要转换的保持原样
+                // }
             }
         }
     }

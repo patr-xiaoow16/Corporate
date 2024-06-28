@@ -2,8 +2,7 @@ import os
 import json
 
 def load_txt(file_path):
-    with open(file_path, 'r') as file:
-        # 使用read()方法读取整个文件内容
+    with open(file_path, 'r', encoding='utf-8') as file:
         file_contents = file.read()
         return file_contents
   
@@ -23,8 +22,8 @@ def save_history_to_file(history, folder='./logs/history', cur_id=None):
     if cur_id:
         # If debug_id is provided, use it as the history ID and overwrite the existing file
         filename = os.path.join(folder, f'history_{cur_id}.json')
-        with open(filename, 'w') as file:
-            json.dump(history, file, indent=4)
+        with open(filename, 'w', encoding='utf-8') as file:
+            json.dump(history, file, indent=4, ensure_ascii=False)
         return cur_id
     else:
         # Find the next available history ID
@@ -33,9 +32,9 @@ def save_history_to_file(history, folder='./logs/history', cur_id=None):
         
         # Generate the filename for the next history entry
         filename = os.path.join(folder, f'history_{next_id}.json')
-        with open(filename, 'w') as file:
+        with open(filename, 'w', encoding='utf-8') as file:
             print(2222222, history)
-            json.dump(history, file, indent=4)
+            json.dump(history, file, indent=4, ensure_ascii=False)
         return next_id
 
 def save_communication_to_file(history, folder='./logs/communication', cur_id=None):
@@ -55,11 +54,11 @@ def save_communication_to_file(history, folder='./logs/communication', cur_id=No
             except json.JSONDecodeError:
                 data = [history]  # 如果读取错误，重新开始一个列表
         # 写回修改后的数据
-        with open(file_path, 'w') as file:
-            json.dump(data, file, indent=4)
+        with open(file_path, 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
     else:
         # 文件不存在或为空，创建文件并写入一个包含单个数据的列表
-        with open(file_path, 'w') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             json.dump([history], file, indent=4)  # 美化输出
 
 def save_chat_history(thread, messages, chat_log_folder='./logs/chatlog'):
@@ -73,7 +72,7 @@ def save_chat_history(thread, messages, chat_log_folder='./logs/chatlog'):
     # Generate the filename for the next chat history file
     chat_history_file = os.path.join(chat_log_folder, f'thread_{next_file_number}.txt')
     
-    with open(chat_history_file, 'w') as file:
+    with open(chat_history_file, 'w', encoding='utf-8') as file:
         for message in messages.data:
             file.write(str(message) + '\n')
             

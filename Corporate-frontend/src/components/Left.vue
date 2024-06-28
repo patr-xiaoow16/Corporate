@@ -8,6 +8,7 @@
     <!-- <TimelineCard></TimelineCard> -->
     <PredictionCard></PredictionCard>
     <FinChat></FinChat>
+    <!-- <FinChatTest></FinChatTest> -->
   </div>
 </template>
 
@@ -20,4 +21,5 @@
 // import TimelineCard from './composables/TimelineCard.vue';
 import PredictionCard from './composables/PredictionCard.vue';
 import FinChat from './composables/FinChat.vue';
+// import FinChatTest from './composables/FinChatTest.vue';
 </script>

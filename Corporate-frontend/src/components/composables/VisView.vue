@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      Data Visualization
+      数据可视化
     </div>
     <div class="vega-chart-wrapper">
       <div v-for="chart in allCharts" :key="chart.id" :ref="setRef(chart.id)" class="vega-chart-container">
@@ -13,7 +13,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, watch, computed, nextTick } from 'vue';
-import { useMainStore } from '@/stores/main';
+import { useMainStore } from '@/stores/mainStore';
 import { toRaw } from 'vue';
 import vegaEmbed from 'vega-embed';
 import { useChartsStore } from '@/stores/chartsStore';
@@ -41,10 +41,14 @@ function setRef(id) {
 
 // 从两个 store 中合并图表数据
 const allCharts = computed(() => {
-  console.log("mainStore.chartsJson", mainStore.chartsJson);
-  console.log("chartsStore.chartsJson", chartsStore.chartsJson);
-  return [...mainStore.chartsJson, ...chartsStore.chartsJson]
+  const combinedCharts = [...mainStore.chartsJson, ...chartsStore.chartsJson];
+  // 按时间戳排序
+  combinedCharts.sort((a, b) => {
+    return new Date(a.timestamp) - new Date(b.timestamp);
+  });
+  return combinedCharts;
 });
+
 
 
 
@@ -154,7 +158,11 @@ function toggleText(chartId) {
   } else {
     textDiv.style.display = 'none';
   }
+  scrollToBottom(); // 到底部
 }
+
+
+
 
 // 删除图表
 function removeChart(id) {
@@ -168,6 +176,8 @@ function removeChart(id) {
     scrollToBottom(); // 删除后滚动到底部
   }
   console.log(`Chart ${id} removed successfully.`);
+  const contentStore = useContentStore(); // 引用Pinia store，引用当前的store实例
+  contentStore.removeTimelineDetail(id); // 删除时间线详情
 }
 
 // 添加发送洞察按钮到容器，修改为加入特定的内容框内部
@@ -183,6 +193,7 @@ function addSendInsightsButton(container, chartId) {
 function sendInsightsToTimeline(chartId) {
   const chart = allCharts.value.find(c => c.id === chartId);
   if (chart && chart.json && chart.json.insights) {
+    console.log("-------------chart---------------", chart);
     const insightsTexts = chart.json.insights.map(insight => `${insight.year}: ${insight.describe}`).join('\n');
     // 发送事件或更新全局状态
     contentstore.setTimelineDetails(chartId, insightsTexts);
@@ -250,7 +261,8 @@ function scrollToBottom() {
 }
 
 .vega-chart-container {
-  position: relative; /* 确保容器是相对定位 */
+  position: relative;
+  /* 确保容器是相对定位 */
   width: 50%;
   height: 280px;
   margin-bottom: 20px;
@@ -264,6 +276,8 @@ function scrollToBottom() {
   /* 添加圆角 */
   box-sizing: border-box;
   /* 包括边框和内边距在内的宽度和高度计算*/
+  overflow: visible;
+  /* 允许子元素超出容器边界 */
 }
 
 .delete-button {
@@ -304,29 +318,43 @@ function scrollToBottom() {
 }
 
 .chart-text {
-  padding: 10px;  /* 提供更多空间 */
-  font-size: 12px; /* 提高可读性 */
-  color: #333; /* 使用高对比度的颜色 */
-  background: #f0f2f5; 
-  border: 1px solid #ccc; /* 更精细的边框 */
-  border-radius: 8px; /* 圆角 */
+  display: block;
+  padding: 10px;
+  /* 提供更多空间 */
+  font-size: 12px;
+  /* 提高可读性 */
+  color: #333;
+  /* 使用高对比度的颜色 */
+  background: #f0f2f5;
+  border: 1px solid #ccc;
+  /* 更精细的边框 */
+  border-radius: 8px;
+  /* 圆角 */
   margin: 5px;
-  width: calc(100% - 20px); /* 适应父容器宽度 */
+  width: calc(100% - 20px);
+  /* 适应父容器宽度 */
   box-sizing: border-box;
-  height: auto;  /* 高度自适应内容 */
-  display: none; /* 默认不显示，由 JavaScript 控制 */
-  transition: all 0.3s ease-in-out; /* 添加平滑的过渡效果 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微的阴影效果 */
+  height: auto;
+  /* 高度自适应内容 */
+  display: none;
+  /* 默认不显示，由 JavaScript 控制 */
+  transition: all 0.3s ease-in-out;
+  /* 添加平滑的过渡效果 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 轻微的阴影效果 */
   height: 140px;
 }
 
 .send-insights-button {
-  position: absolute;  /* 使用绝对定位 */
-  bottom: -30px;            /* 距离容器顶部5px */
-  right: 20px;          /* 距离容器右侧5px */
+  position: absolute;
+  /* 使用绝对定位 */
+  bottom: -30px;
+  /* 距离容器顶部5px */
+  right: 20px;
+  /* 距离容器右侧5px */
   padding: 1px 2px;
   font-size: 11px;
-  background-color: #99bdf1;  
+  background-color: #99bdf1;
   color: white;
   border: none;
   border-radius: 4px;
@@ -334,7 +362,6 @@ function scrollToBottom() {
 }
 
 .send-insights-button:hover {
-  background-color: #c6daf7; 
+  background-color: #c6daf7;
 }
-
 </style>

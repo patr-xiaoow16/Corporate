@@ -1,11 +1,11 @@
 <template>
     <div class="card">
         <div class="timeline-header">
-            Milestones
+            时间轴
         </div>
         <div class="timeline-container">
             <a-timeline>
-                <a-timeline-item color="orange" v-for="(item, index) in timelineDetails" :key="index">
+                <!-- <a-timeline-item color="orange" v-for="(item, index) in timelineDetails" :key="index">
                     <div class="timeline-content new-timeline-item" @dblclick.stop="handleClick(item.year)">
                         <h1>{{ item.year }}</h1>
                         <input v-if="item.editing" v-model="item.event" style="width: 100%;">
@@ -19,29 +19,27 @@
                                 确定
                             </button>
                         </div>
+
+                    </div>
+                </a-timeline-item> -->
+
+                <a-timeline-item v-for="item in timelineDetails" :key="item.year" :color="getColor(item.year)">
+                    <div class="timeline-content" @dblclick.stop="handleClick(item.year)"
+                        :class="{ 'new-item': item.isNew }">
+                        <h1>{{ item.year }}</h1>
+                        <input v-if="item.editing" v-model="item.event" style="width: 100%;">
+                        <h3 v-else>{{ item.event }}</h3>
+                        <div v-for="(detail, index) in item.details" :key="index">
+                            <p v-if="!item.editing">{{ detail.text }}</p>
+                            <input v-else v-model="detail.text" style="width: 100%;">
+                        </div>
+                        <div class="button-wrapper" style="align-self: flex-end;">
+                            <button v-if="item.editing" @click.stop="item.editing = false"
+                                class="save-button">确定</button>
+                        </div>
                     </div>
                 </a-timeline-item>
 
-                <!-- 2014 -->
-                <a-timeline-item color="green">
-                    <div class="timeline-content" @dblclick.stop="handleClick('2014')">
-                        <h1>2014</h1>
-                        <input v-if="timelineData['2014'].editing" v-model="timelineData['2014'].event"
-                            style="width: 100%;">
-                        <h3 v-else>{{ timelineData['2014'].event }}</h3>
-                        <div v-for="(detail, index) in timelineData['2014'].details" :key="index">
-                            <p v-if="!timelineData['2014'].editing">{{ detail.text }}</p>
-                            <input v-else v-model="detail.text" style="width: 100%;">
-                        </div>
-                        <!-- 加入保存按钮确保编辑完成后用户确认 -->
-                        <div class="button-wrapper" style="align-self: flex-end;">
-                            <button v-if="timelineData['2014'].editing"
-                                @click.stop="timelineData['2014'].editing = false" class="save-button">
-                                确定
-                            </button>
-                        </div>
-                    </div>
-                </a-timeline-item>
 
                 <!-- 2015 -->
                 <a-timeline-item color="red">
@@ -225,18 +223,13 @@ import { useContentStore } from '@/stores/contentStore';
 import { computed } from 'vue';
 
 
+
+
 const summarystore = useSummaryStore();
 const contentstore = useContentStore();
 const { timelinecontentData, timelinecontentDetails } = contentstore.state;
 
 const timelineData = reactive({
-    '2014': {
-        event: ' ',
-        details: [
-            { text: ' ' }
-        ],
-        editing: false // 新增编辑状态
-    },
     '2015': {
         event: '意外费用爆增',
         details: [
@@ -296,9 +289,36 @@ const timelineData = reactive({
 
 });
 
+
+const getColor = (year) => {
+    // 示例: 根据年份决定时间线项的颜色
+    const currentYear = new Date().getFullYear();
+    if (year == currentYear) {
+        return 'red'; // 当年用红色
+    } else if (year > currentYear) {
+        return 'blue'; // 未来年份用蓝色
+    } else {
+        return 'green'; // 过去的年份用绿色
+    }
+}
+
+
+
 // 计算属性，用于解析并格式化时间线详情
 const timelineDetails = computed(() => {
     const details = {};
+
+    // 从timelineData合并固定数据
+    Object.entries(timelineData).forEach(([year, data]) => {
+        details[year] = {
+            year,
+            event: data.event,
+            details: data.details.map(detail => ({ text: detail.text })),
+            editing: data.editing,
+            isNew: false // 假设这些是旧数据
+        };
+    });
+
     // 合并从contentstore获取的数据
     Object.entries(contentstore.state.timelineDetails).forEach(([chartId, detailText]) => {
         // 假设 detailText 的格式是 "year: description"，我们可以进一步解析它
@@ -313,10 +333,12 @@ const timelineDetails = computed(() => {
                 details[year] = {
                     year,
                     details: [],
-                    editing: false
+                    editing: false,
+                    isNew: true // 标记为新数据
                 };
             }
             details[year].details.push({ text });
+            details[year].isNew = true; // 同一年份有新数据
         });
     });
 
@@ -330,10 +352,21 @@ const timelineDetails = computed(() => {
 
 const editMode = ref(false);
 
+// const handleClick = (year) => {
+//     console.log(`Clicked on ${year}`);
+//     timelineData[year].editing = !timelineData[year].editing; // 切换当前年份的编辑状态
+// }
 const handleClick = (year) => {
-    console.log(`Clicked on ${year}`);
-    timelineData[year].editing = !timelineData[year].editing; // 切换当前年份的编辑状态
+    if (timelineData[year]) {  // 确保数据存在
+        console.log(`Clicked on ${year}`);
+        timelineData[year].editing = !timelineData[year].editing;
+    }
 }
+
+
+
+
+
 
 
 
@@ -388,7 +421,7 @@ h3 {
     padding: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
-    height: 740px;
+    height: 748px;
 
 }
 
@@ -402,7 +435,7 @@ h3 {
 }
 
 .timeline-container {
-    max-height: 660px;
+    max-height: 668px;
     overflow-y: auto;
     /* 允许垂直滚动 */
     padding-right: 5px;
@@ -441,4 +474,16 @@ h3 {
     margin-top: auto;
     /* 确保它始终在容器底部 */
 }
+
+.new-item {
+    background-color: #e6f7ff; /* 浅蓝色背景 */
+    border-left: 5px solid #1890ff; /* 蓝色左边框 */
+    animation: fadeIn 1s ease-out; /* 淡入动画 */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 </style>

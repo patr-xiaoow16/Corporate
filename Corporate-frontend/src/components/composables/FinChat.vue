@@ -1,6 +1,11 @@
 <template>
     <div class="chat-title">
-        Chat View
+        <span>对话框</span>
+        <select v-model="selectedUserType" class="user-type-select">
+            <option disabled value="">选择用户类型</option>
+            <option value="财务专家">财务专家</option>
+            <option value="普通投资者">普通投资者</option>
+        </select>
     </div>
     <div id="app" class="chat-container">
         <div class="chat-box">
@@ -12,69 +17,125 @@
         <div class="input-area">
             <input v-model="userInput" placeholder="Type your message..." @keyup.enter="sendQuestion"
                 class="input-box" />
-            <button @click="sendQuestion1" class="send-button">Send</button>
+            <button @click="sendQuestion" class="send-button">Send</button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import axios from 'axios';
-import { useMainStore } from '@/stores/main';
+import { useMainStore } from '@/stores/mainStore';
 
 const store = useMainStore();
 
 const userInput = ref('');
+const selectedUserType = ref('');
 const messages = ref([]);
 
-const sendQuestion1 = () => {
-    console.log(store.chartsJson);
-}
+// const sendQuestion = async () => {
+//     if (userInput.value.trim() && selectedUserType.value) {
+//         const question = userInput.value;
+//         const userType = selectedUserType.value;
+//         const userMessage = { sender: 'user', content: question };
+//         messages.value.push(userMessage);
+//         userInput.value = '';
+
+//         try {
+//             const response = await axios.post('http://127.0.0.1:5000/ask', { question, user_type: userType });
+//             console.log('Response data:', response.data);
+
+//             let insightText = 'No insightful response received.';
+
+//             if (response.data.json_data) {
+//                 if (response.data.json_data.insight) {
+//                     insightText = response.data.json_data.insight;
+//                 } else {
+//                     insightText = JSON.stringify(response.data.json_data);
+//                 }
+//                 messages.value.push({ sender: 'bot', content: insightText });
+//             } else if (response.data.texts) {
+//                 messages.value.push({ sender: 'bot', content: response.data.texts });
+//             } else {
+//                 messages.value.push({ sender: 'bot', content: 'No insightful response received.' });
+//             }
+
+//             if (response.data.chart_json) {
+//                 store.addChartJson(response.data.chart_json);
+//                 console.log('Response chart_json:', response.data.chart_json);
+//             }
+//         } catch (error) {
+//             console.error('Error sending the question:', error);
+//             messages.value.push({ sender: 'bot', content: 'Error communicating with the server.' });
+//         }
+//     } else {
+//         messages.value.push({ sender: 'bot', content: 'Please enter a question and select your user type.' });
+//     }
+//     scrollToBottom();
+// }
 
 const sendQuestion = async () => {
-  if (userInput.value.trim()) {
-    const question = userInput.value;
-    const userMessage = { sender: 'user', content: question };
-    messages.value.push(userMessage); // 将用户问题添加到消息数组
-    userInput.value = ''; // 清空输入框
-    
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/ask', { question });
-      console.log('----------Response data:---------', response.data); 
+    if (userInput.value.trim() && selectedUserType.value) {
+        const question = userInput.value;
+        const userType = selectedUserType.value;
+        const userMessage = { sender: 'user', content: question };
+        messages.value.push(userMessage);
+        userInput.value = '';
 
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/ask', { question, user_type: userType });
+            console.log('Response data:', response.data);
 
-      if (response.data.json_data && response.data.json_data.insight) {
-        const insightText = response.data.json_data.insight.text; // 获取insight中的text
-        messages.value.push({ sender: 'bot', content: insightText }); // 显示insight文本
-      } else {
-        messages.value.push({ sender: 'bot', content: 'No insightful response received.' });
-      }
+            let insightText = 'No insightful response received.';
 
-    //   // 确认 response.data 是否有 json_data 字段，并且 json_data 字段内有 insight
-    //   if (response.data && response.data.insight) {
-    //     const insightText = response.data.insight.text; // 获取insight中的text
-    //     messages.value.push({ sender: 'bot', content: insightText }); // 显示insight文本
-    //   } else {
-    //     messages.value.push({ sender: 'bot', content: 'No insightful response received.' });
-    //   }
+            if (response.data.json_data && response.data.json_data.insight) {
+                insightText = response.data.json_data.insight;
+            } else if (response.data.texts) {
+                insightText = response.data.texts;
+            }
 
+            messages.value.push({ sender: 'bot', content: insightText });
 
-      // 保存 chart_json 到 store
-      if (response.data.chart_json) {
-        store.addChartJson(response.data.chart_json);
-        console.log('----------Response chart_json:---------', response.data.chart_json); 
-      }
-    //   // 保存 chart_json 到 store
-    //   if (response.data.chart_json) {
-    //     store.setChartJson(response.data.chart_json);
-    //   }
-    } catch (error) {
-      console.error('Error sending the question:', error);
-      messages.value.push({ sender: 'bot', content: 'Error communicating with the server.' });
+            if (response.data.chart_json) {
+                store.addChartJson(response.data.chart_json);
+                console.log('Response chart_json:', response.data.chart_json);
+            }
+        } catch (error) {
+            console.error('Error sending the question:', error);
+
+            if (messages.value.length === 0 || messages.value[messages.value.length - 1].sender === 'user') {
+                messages.value.push({ sender: 'bot', content: 'Error communicating with the server.' });
+            }
+
+            if (error.response) {
+                // Server responded with a status other than 200 range
+                console.error('Error response data:', error.response.data);
+                console.error('Error response status:', error.response.status);
+                console.error('Error response headers:', error.response.headers);
+            } else if (error.request) {
+                // Request was made but no response received
+                console.error('Error request data:', error.request);
+            } else {
+                // Something happened in setting up the request
+                console.error('Error message:', error.message);
+            }
+        }
+    } else {
+        messages.value.push({ sender: 'bot', content: 'Please enter a question and select your user type.' });
     }
-  }
+    scrollToBottom();
 }
 
+
+
+function scrollToBottom() {
+    nextTick(() => {
+        const wrapper = document.querySelector('.chat-box');
+        if (wrapper) {
+            wrapper.scrollTop = wrapper.scrollHeight;
+        }
+    });
+}
 </script>
 
 <style scoped>
@@ -86,10 +147,13 @@ const sendQuestion = async () => {
     justify-content: center;
     background-color: #f5f5f5;
     width: 350px;
-    margin-left: 5px; /* 向右移动5像素 */
+    margin-left: 5px;
 }
 
 .chat-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     font-size: 20px;
     font-weight: bold;
@@ -97,7 +161,21 @@ const sendQuestion = async () => {
     background-color: #f5f5f5;
     border-bottom: 1px solid #eee;
     width: 350px;
-    margin-left: 5px; /* 向右移动5像素 */
+    margin-left: 5px;
+}
+
+.user-type-select {
+    padding: 2px 4px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+    background-color: white;
+}
+
+.user-type-select:focus {
+    border-color: #1a73e8;
 }
 
 .chat-box {
@@ -110,6 +188,7 @@ const sendQuestion = async () => {
     margin-bottom: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    scroll-behavior: smooth;
 }
 
 .input-area {
@@ -120,10 +199,10 @@ const sendQuestion = async () => {
 
 .input-box {
     flex-grow: 1;
-    padding: 1px 20px;  /* 减小上下的 padding 并增加左右的 padding */
+    padding: 1px 20px;
     border: 2px solid #ccc;
     border-radius: 12px;
-    width: 80%;  /* 明确设置宽度，根据需要调整 */
+    width: 80%;
     outline: none;
     transition: border-color 0.3s;
 }
@@ -170,5 +249,4 @@ const sendQuestion = async () => {
     align-self: flex-start;
     margin-left: 10px;
 }
-
 </style>

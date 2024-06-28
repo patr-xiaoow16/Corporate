@@ -10,11 +10,13 @@ from openai import OpenAI
 from time import strftime
 from time import gmtime
 import time
-from query_handler import query, init_llm
-from analysiscn import generate_insight_by_llm_codes
+# from query_handler import query, init_llm
+# from analysiscn import generate_insight_by_llm_codes
 import altair as alt
 from decompose_task import decompose_task
 from util import load_txt
+from analysiscn_test import generate_insight_by_llm_codes
+from query_handler_test import query, init_llm
 # from analysis_vega import generate_insight_by_llm
 
 # from summarize import Summarizer
@@ -32,10 +34,12 @@ def ask():
         print(f"Request data: {msg}")
         if 'question' in msg:
             free_question = msg['question']
+            user_type = msg['user_type']
             thread_id, assistant_id = init_llm()  # 确保LLM已初始化，线程已准备就绪
             print(f"Initialized LLM with thread_id: {thread_id}, assistant_id: {assistant_id}")
             # print("-----------------free_question---------------", free_question)
-            record = generate_insight_by_llm_codes(free_question, thread_id, assistant_id)
+            # record = generate_insight_by_llm_codes(free_question, thread_id)
+            record = generate_insight_by_llm_codes(free_question, user_type, thread_id)
             print("-----------------record---------------", record)
             # 提取图表数据
             chart_json = record["chart_json"]

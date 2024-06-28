@@ -54,7 +54,7 @@ def get_globals_dict(code_string, data):
     return globals_dict 
 
 
-def generate_insight_by_llm_codes(task, thread_id, assistant_id, data_introduction = data_introduction):
+def generate_insight_by_llm_codes(task, thread_id, data_introduction = data_introduction):
     record = {"json_data":{"insight":None,"error_message":None}, "chart_json":None}
     code_example = """
 ```python
@@ -97,7 +97,7 @@ def plot(data: pd.DataFrame):
     """
     data = pd.read_csv("uploaded_files/output.csv", encoding='utf-8')
     
-    # prompt1 = f"对于这个任务: {task}, 数据概述是 {data_introduction}。你需要编写Python代码来分析数据并解决这个任务。你需要确保分析和可视化过程中使用的列名与数据集中的列名相匹配，使用数据集中的列名。数据集 target.csv 已经被 pandas.read_csv() 读取进一个 dataframe，只需使用变量 'data' 来引用这个 dataframe，并不需要再读取其他数据。完成数据分析后，你应该继续使用 altair 来生成可视化。确保每个生成的可视化都有一个刷选功能，允许你选择数据的一个子集。确保高度和宽度都是container。请确保生成单一视图，不需要组合视图。请给我完整的代码，包括数据分析和 altair 部分在内的函数 'plot(data)'。你只需要给出函数定义 'plot(data)'，不需要执行它。请按这个结构编写代码：```python```，这里有一个例子" + code_example
+    # 第一个prompt
     prompt1 = f"""
     请帮助我解决以下数据分析任务: {task}
 
@@ -109,7 +109,8 @@ def plot(data: pd.DataFrame):
     - 在开始分析前，首先验证数据中是否存在必要的列名，如不存在，请打印出缺失列名的警告。
     - 生成一个包含选择功能的可视化，以便选择数据的子集。
     - 只需要一个单一视图，不需要组合视图。
-    - 请注意确保高度和宽度都是container, width='container', height='container'  
+    - 请注意确保高度和宽度都是container, width='container', height='container'。
+    - 所有的日期、时间、年份都是对应的数据集中的年份这一列。
 
 
     请提供完整的函数定义，不需要执行它。以下是你可以参考的代码框架：
@@ -120,63 +121,66 @@ def plot(data: pd.DataFrame):
  
     record1 = query(prompt1, thread_id, assistant_id)
     print("----------------record1--------------------",record1)
+    
+    # 执行生成python代码
+    if "python_codes" in record1 and record1["python_codes"].strip():  # 确保python_codes存在且不为空
 
-    codes = record1["python_codes"] 
-    # codes = preprocess_code(codes)
-    print("----------------python_codes-------------------",codes)
-    chart_json =None
-    try:
-        ex_locals = get_globals_dict(codes, data)
-        exec(codes,ex_locals)
-        
-        # print(ex_locals)
-        plot = ex_locals["plot"] 
-        alt.data_transformers.disable_max_rows()
-        
-        chart = plot(data)
-        chart_json = chart.to_json() 
-        chart_json = json.loads(chart_json)
-        # print("----------------chart_json--------------------",chart_json)
-    except KeyError as e:
-        print(f"Missing column in data: {e}")
-        chart_json = {}
-    except Exception as e:
-        print(f"Error executing the plot function: {e}")
-        chart_json = {}
-        
-        if 'data' in  chart_json: 
-            string = str(uuid.uuid4())
+        codes = record1["python_codes"] 
+        # codes = preprocess_code(codes)
+        print("----------------python_codes-------------------",codes)
+        chart_json =None
+        try:
+            ex_locals = get_globals_dict(codes, data)
+            exec(codes,ex_locals)
             
-            with open(f"uploaded_files/data_{string}.json", 'w') as json_file:
-                json.dump(chart_json["datasets"][chart_json["data"]["name"]], json_file, indent=4)
-            chart_json["data"]={"url":f"http://127.0.0.1:5000/data/data_{string}.json"}
-            del chart_json["datasets"]
-    # if chart_json and 'data' in chart_json:
-    #     string = str(uuid.uuid4())
-    #     with open(f"uploaded_files/data_{string}.json", 'w') as json_file:
-    #         json.dump(chart_json["datasets"][chart_json["data"]["name"]], json_file, indent=4)
-    #     chart_json["data"] = {"url": f"http://127.0.0.1:5000/data/data_{string}.json"}
-    #     del chart_json["datasets"]
+            # print(ex_locals)
+            plot = ex_locals["plot"] 
+            alt.data_transformers.disable_max_rows()
+            
+            chart = plot(data)
+            chart_json = chart.to_json() 
+            chart_json = json.loads(chart_json)
+            # print("----------------chart_json--------------------",chart_json)
+        except KeyError as e:
+            print(f"Missing column in data: {e}")
+            chart_json = {}
+        except Exception as e:
+            print(f"Error executing the plot function: {e}")
+            chart_json = {}
+            
+            if 'data' in  chart_json: 
+                string = str(uuid.uuid4())
+                
+                with open(f"uploaded_files/data_{string}.json", 'w') as json_file:
+                    json.dump(chart_json["datasets"][chart_json["data"]["name"]], json_file, indent=4)
+                chart_json["data"]={"url":f"http://127.0.0.1:5000/data/data_{string}.json"}
+                del chart_json["datasets"]
+        
+        # 第二个prompt
+        prompt2 = f"基于之前的数据分析和可视化结果，请提供对 {task} 的深入洞察。数据集已为你上传。这是生成图表的初始代码:\n{{codes}}\n基于之前的数据转换过程，你需要进一步进行洞察分析，并根据数据按年份报告重要的洞察。例如，若有年份数据，应只描述成特定年份中的最大值、最小值及其变化，如‘2014: 非流动资产最少，为 446,502,826.3 元’，‘2022: 非流动资产最多，为 9,632,486,090.0 元’，以及‘2015: 非流动资产波动最大，从2014年的 446,502,826.3 元增加到 1,156,193,876.0 元，增长率约为 159%’。请确保使用的列名与你的数据集中的列名相匹配。在生成自然语言洞察文本之前，直接使用数据集中的原始列名。注意，如果洞察文本中使用了数据变量，直接使用数据集中的原始列名。请确保你的输出与以下示例格式相匹配，并在生成的洞察后不要添加其他文本：```json\n{{\"insight\": {{\n\"text\": \"公司的债务资产比率分布显示，相当一部分公司的比率在 0.1 到 0.5 之间。\",\n\"type\": \"Distribution\",\n\"parameters\": \"positive\",\n\"data_variables\": [\"TotalLiabilities\", \"TotalAssets\"],\n\"data_values\": {{\n\"TotalLiabilities\": \"不同值\",\n\"TotalAssets\": \"不同值\"\n}}\n}},\n\"error_message\": \"null\"}}"
+        
 
-    # except Exception as e:
-    #     print("Error executing the code:", e)
-    # print("chart json 585", chart_json)
-    
-    prompt2 = f"基于之前的数据分析和可视化结果，请提供对 {task} 的深入洞察。数据集已为你上传。这是生成图表的初始代码:\n{{codes}}\n基于之前的数据转换过程，你需要进一步进行洞察分析，报告一个重要的洞察。在生成自然语言洞察文本之前，你需要确保使用的列名与你的数据集中的列名相匹配。注意，如果洞察文本中使用了数据变量，直接使用数据集中的原始列名。下面是你输出的一个例子：```json\n{{\"insight\": {{\n\"text\": \"公司的债务资产比率分布显示，相当一部分公司的比率在 0.1 到 0.5 之间。\",\n\"type\": \"Distribution\",\n\"parameters\": \"positive\",\n\"data_variables\": [\"TotalLiabilities\", \"TotalAssets\"],\n\"data_values\": {{\n\"TotalLiabilities\": \"不同值\",\n\"TotalAssets\": \"不同值\"\n}}\n}},\n\"error_message\": \"null\"}}```\n. 请确保你的输出与示例格式相匹配，并在生成的洞察后不要添加其他文本。"
 
-    record2 = query(prompt2, thread_id, assistant_id)
-    print("----------------record2--------------------",record2)
+        record2 = query(prompt2, thread_id, assistant_id)
+        print("----------------record2--------------------",record2)
+        
 
 
+        record = { "json_data": record2["json_data"], "chart_json":chart_json,"codes":codes}
+        # print("----------------Record--------------------",record)
+        print("----------------JSON Data----------------", record["json_data"])
+        print("----------------Insight Text----------------",record["json_data"]["insight"])
+        print("----------------Chart JSON----------------", record["chart_json"])
+        # print("----------------Codes----------------", record["codes"])
+    else:
+        # 没有有效的python_codes，使用text回应
+        prompt2 = f"基于之前的数据分析和可视化结果，请提供对 {task} 的深入洞察。你需要进一步进行洞察分析，并根据数据按年份报告重要的洞察。例如，若有年份数据，应只描述成特定年份中的最大值、最小值及其变化，如‘2014: 非流动资产最少，为 446,502,826.3 元’，‘2022: 非流动资产最多，为 9,632,486,090.0 元’，以及‘2015: 非流动资产波动最大，从2014年的 446,502,826.3 元增加到 1,156,193,876.0 元，增长率约为 159%’。请确保使用的列名与你的数据集中的列名相匹配。在生成自然语言洞察文本之前，直接使用数据集中的原始列名。注意，如果洞察文本中使用了数据变量，直接使用数据集中的原始列名。请确保你的输出与以下示例格式相匹配，并在生成的洞察后不要添加其他文本：```json\n{{\"insight\": {{\n\"text\": \"公司的债务资产比率分布显示，相当一部分公司的比率在 0.1 到 0.5 之间。\",\n\"type\": \"Distribution\",\n\"parameters\": \"positive\",\n\"data_variables\": [\"TotalLiabilities\", \"TotalAssets\"],\n\"data_values\": {{\n\"TotalLiabilities\": \"不同值\",\n\"TotalAssets\": \"不同值\"\n}}\n}},\n\"error_message\": \"null\"}}"
+        record2 = query(prompt2, thread_id, assistant_id)
+        print("----------------record2--------------------", record2)
+        
+        
+        
+        record = {"json_data": record2["texts"], "chart_json": {}, "codes": ""}
 
-
-    record = { "json_data": record2["json_data"], "chart_json":chart_json,"codes":codes}
-    # print("----------------Record--------------------",record)
-    print("----------------JSON Data----------------", record["json_data"])
-    print("----------------Insight Text----------------",record["json_data"]["insight"])
-    print("----------------Chart JSON----------------", record["chart_json"])
-    # print("----------------Codes----------------", record["codes"])
-
-    
-    # record["json_data"]["insight"] =label_insight(record["json_data"]["insight"]["text"]) 
-    return record 
+    print("----------------Final Record--------------------", record)
+    return record

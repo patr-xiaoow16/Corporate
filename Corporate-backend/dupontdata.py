@@ -597,7 +597,7 @@ def create_dupont_structure(year):
                             },
                             {
                                 'id': 'child-a-a-b',
-                                'label': '营业收入',
+                                'label': '营业总收入',
                                 'subLabel': f"{results_dict.get('营业总收入', ''):,.0f}"
                             }
                         ]

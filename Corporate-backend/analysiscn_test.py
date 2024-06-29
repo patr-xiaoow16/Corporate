@@ -13,6 +13,9 @@ import time
 import json
 import os
 import altair as alt
+import importlib.util
+# 从 view_recommendations.py 导入视图推荐字典
+# from view_recommendations import view_recommendations
 
 # 使用 query_handler.py 初始化 LLM
 thread_id, assistant_id = init_llm()
@@ -67,8 +70,54 @@ def preprocess_text(text):
 
     return text
 
+# 视图推荐
+def read_view_recommendation(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        view_recommendation_content = file.read()
+    # print("------view_recommendation_content------")
+    # print(view_recommendation_content)
+    return view_recommendation_content
+
 def generate_insight_by_llm_codes(task, user_type, thread_id, data_introduction=data_introduction):
     record = {"json_data": {"insight": None, "error_message": None}, "chart_json": None}
+    
+    # 视图推荐内容
+    view_recommendation_example = read_view_recommendation("./prompts/view_recommendation.txt")
+    # print("------view_recommendation_example------")
+    # print(view_recommendation_example)
+    
+    # 读取视图推荐内容
+    # spec = importlib.util.spec_from_file_location("view_recommendations", "view_recommendations.py")
+    # view_recommendations_module = importlib.util.module_from_spec(spec)
+    # spec.loader.exec_module(view_recommendations_module)
+    # view_recommendations = view_recommendations_module.view_recommendations
+    # print("------view_recommendations------")
+    # print(view_recommendations)
+    
+    prompt1 = f"""
+    请帮助我解决以下金融数据分析任务: {task}
+    数据介绍: {data_introduction}
+    在绘制视图之前，请先参考以下视图推荐内容：{view_recommendation_example}，并选择合适的视图。
+    根据用户问题判断绘制视图的类型，从视图推荐内容中选择一种合适的视图类型，并在生成代码之前输出选择的视图类型及选择理由。你只需要给出选择的视图类型以及原因，不需要生成代码。
+    """
+    # prompt1 = f"""
+    # 请帮助我解决以下金融数据分析任务: {task}
+    # 数据介绍: {data_introduction}
+    # 在绘制视图之前，请先参考 view_recommendations.py 文件中的视图推荐内容，并选择合适的视图。
+    # 根据用户问题判断绘制视图的类型，从 view_recommendations.py 文件中的视图推荐内容中选择一种合适的视图类型，并在生成代码之前输出选择的视图类型及选择理由。你只需要给出选择的视图类型以及原因，不需要生成代码。
+    # """
+    
+    # print("------prompt1------")
+    # print(prompt1)
+    
+    view_selection = query(prompt1, thread_id, assistant_id)
+    print("----------------view_selection--------------------", view_selection)
+    
+    # 视图推荐内容
+    view_recommendation_code_example = read_view_recommendation("./prompts/view_recommendation_code.txt")
+    # print("------view_recommendation_code_example------")
+    # print(view_recommendation_code_example)
+    
     code_example = """
 ```python
 import pandas as pd
@@ -224,14 +273,19 @@ def plot(data: pd.DataFrame):
     """
     data = pd.read_csv("uploaded_files/output.csv", encoding='utf-8')
 
-    prompt1 = f"""
+    prompt2 = f"""
     请帮助我解决以下金融数据分析任务: {task}
 
     数据介绍: {data_introduction}
+    
+    视图选择: {view_selection}
+    
     你需要使用 Python 和 Altair 库编写一个名为 'plot' 的函数来分析和可视化数据。你只需要给出函数定义 'plot(data)'，不需要执行它。假设数据已经通过 `pd.read_csv("output.csv")` 加载到名为 'data' 的 DataFrame 中。
     在编写代码前，请先检查数据的列名并确认需要的列是否存在。你可以使用 `data.columns` 来检查列名。
 
     请确保你的函数符合以下要求：
+    - 根据用户问题判断绘制视图的类型，从视图推荐内容中选择合适的视图类型，并在生成代码之前输出选择的视图类型及选择理由。
+    - 你要根据选择的视图类型来生成相应视图的代码，以下是你可以参考的视图类型代码示例：{view_recommendation_code_example}
     - 在开始分析前，首先验证数据中是否存在必要的列名，如不存在，请打印出缺失列名的警告。
     - 根据用户问题生成相应的计算代码，例如增长率、收益率、年化收益率、波动率、最大回撤、贝塔系数、阿尔法系数、相对强弱指数（RSI）、成交量加权平均价格（VWAP）、布林带、移动平均收敛散度（MACD）、累计收益率、变异系数、收益波动率、信息比率、特雷诺比率等。
     - 生成一个包含选择功能的可视化，以便选择数据的子集。
@@ -244,11 +298,11 @@ def plot(data: pd.DataFrame):
     """
 
 
-    record1 = query(prompt1, thread_id, assistant_id)
-    print("----------------record1--------------------", record1)
+    record2 = query(prompt2, thread_id, assistant_id)
+    print("----------------record2--------------------", record2)
 
-    if "python_codes" in record1 and record1["python_codes"].strip():  # 确保python_codes存在且不为空
-        codes = record1["python_codes"]
+    if "python_codes" in record2 and record2["python_codes"].strip():  # 确保python_codes存在且不为空
+        codes = record2["python_codes"]
         print("----------------python_codes-------------------", codes)
         chart_json = None
         try:
@@ -276,7 +330,7 @@ def plot(data: pd.DataFrame):
                 chart_json["data"] = {"url": f"http://127.0.0.1:5000/data/data_{string}.json"}
                 del chart_json["datasets"]
         
-        prompt2 = f"""
+        prompt3 = f"""
         用户类型：{user_type}。用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。回答应包含以下结构，避免过于详细的解释，确保每部分不超过两句话：
 
         1. 数据点：根据用户问题提供关键数据点。
@@ -315,20 +369,20 @@ def plot(data: pd.DataFrame):
 
 
         
-        record2 = query(prompt2, thread_id, assistant_id)
-        print("----------------record2--------------------", record2)
+        record3 = query(prompt3, thread_id, assistant_id)
+        print("----------------record3--------------------", record3)
 
-        if "texts" in record2:
-            record2["texts"] = preprocess_text(record2["texts"])
+        if "texts" in record3:
+            record3["texts"] = preprocess_text(record3["texts"])
 
-        record = {"json_data": record2.get("json_data", None), "chart_json": chart_json, "codes": codes, "texts": record2.get("texts", None)}
+        record = {"json_data": record3.get("json_data", None), "chart_json": chart_json, "codes": codes, "texts": record3.get("texts", None)}
         print("----------------JSON Data----------------", record["json_data"])
         if record["json_data"] is not None:
             print("----------------Insight Text----------------", record["json_data"]["insight"])
         print("----------------Chart JSON----------------", record["chart_json"])
         print("----------------Record--------------------", record)
     else:
-        prompt2 = f"""
+        prompt3 = f"""
         用户类型：{user_type}。用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。回答应包含以下结构，避免过于详细的解释，确保每部分不超过两句话：
 
         1. 数据点：根据用户问题提供关键数据点。
@@ -364,13 +418,13 @@ def plot(data: pd.DataFrame):
         请务必按上述格式返回答案。
         """
 
-        record2 = query(prompt2, thread_id, assistant_id)
-        print("----------------record2--------------------", record2)
+        record3 = query(prompt3, thread_id, assistant_id)
+        print("----------------record3--------------------", record2)
         
-        if "texts" in record2:
-            record2["texts"] = preprocess_text(record2["texts"])
+        if "texts" in record3:
+            record3["texts"] = preprocess_text(record3["texts"])
 
-        record = {"json_data": record2.get("json_data", None), "chart_json": {}, "codes": "", "texts": record2.get("texts", None)}
+        record = {"json_data": record3.get("json_data", None), "chart_json": {}, "codes": "", "texts": record3.get("texts", None)}
 
     print("----------------Final Record--------------------", record)
     

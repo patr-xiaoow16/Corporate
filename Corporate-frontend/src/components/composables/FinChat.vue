@@ -1,6 +1,6 @@
 <template>
     <div class="chat-title">
-        <span>对话框</span>
+        <span class="pr-3">对话框</span>
         <select v-model="selectedUserType" class="user-type-select">
             <option disabled value="">选择用户类型</option>
             <option value="财务专家">财务专家</option>

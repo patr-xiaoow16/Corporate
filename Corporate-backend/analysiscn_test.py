@@ -14,11 +14,15 @@ import json
 import os
 import altair as alt
 import importlib.util
+# from query_handler_2llm import query, init_llms
 # 从 view_recommendations.py 导入视图推荐字典
 # from view_recommendations import view_recommendations
 
+
+
 # 使用 query_handler.py 初始化 LLM
 thread_id, assistant_id = init_llm()
+
 
 data_introduction = load_txt('./prompts/output_introduction_cn.txt')
 
@@ -70,6 +74,15 @@ def preprocess_text(text):
 
     return text
 
+# 移除多余的标记并解析 JSON
+def clean_and_parse_json(text):
+    try:
+        cleaned_text = text.strip("```json").strip("```").strip()
+        return json.loads(cleaned_text)
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON: {e}")
+        return []
+
 # 视图推荐
 def read_view_recommendation(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -78,13 +91,28 @@ def read_view_recommendation(file_path):
     # print(view_recommendation_content)
     return view_recommendation_content
 
+# Self-refine 执行生成结果的查询，并在检测到错误或警告时进行自我评估和修正。
+def self_refine_step(prompt, thread_id, assistant_id):
+    response = query(prompt, thread_id, assistant_id)
+    # 自我评估和修正逻辑
+    if "error" in response or "warning" in response:
+        feedback_prompt = f"""
+        你生成的结果中包含错误或警告。请根据以下反馈对你的代码进行修正：
+        错误/警告: {response}
+        """
+        refined_response = query(feedback_prompt, thread_id, assistant_id)
+        return refined_response
+    return response
+
+
+
 def generate_insight_by_llm_codes(task, user_type, thread_id, data_introduction=data_introduction):
     record = {"json_data": {"insight": None, "error_message": None}, "chart_json": None}
     
     # 视图推荐内容
-    view_recommendation_example = read_view_recommendation("./prompts/view_recommendation.txt")
-    # print("------view_recommendation_example------")
-    # print(view_recommendation_example)
+    view_recommendation_example = read_view_recommendation("./prompts/view_recommendation_question.txt")
+    print("------view_recommendation_example------")
+    print(view_recommendation_example)
     
     # 读取视图推荐内容
     # spec = importlib.util.spec_from_file_location("view_recommendations", "view_recommendations.py")
@@ -99,6 +127,7 @@ def generate_insight_by_llm_codes(task, user_type, thread_id, data_introduction=
     数据介绍: {data_introduction}
     在绘制视图之前，请先参考以下视图推荐内容：{view_recommendation_example}，并选择合适的视图。
     根据用户问题判断绘制视图的类型，从视图推荐内容中选择一种合适的视图类型，并在生成代码之前输出选择的视图类型及选择理由。你只需要给出选择的视图类型以及原因，不需要生成代码。
+    然后，自我检查所选视图类型及理由是否正确，若有问题，请进行修正。
     """
     # prompt1 = f"""
     # 请帮助我解决以下金融数据分析任务: {task}
@@ -110,13 +139,15 @@ def generate_insight_by_llm_codes(task, user_type, thread_id, data_introduction=
     # print("------prompt1------")
     # print(prompt1)
     
-    view_selection = query(prompt1, thread_id, assistant_id)
+    # view_selection = query(prompt1, thread_id, assistant_id)
+    # print("----------------view_selection--------------------", view_selection)
+    view_selection = self_refine_step(prompt1, thread_id, assistant_id)
     print("----------------view_selection--------------------", view_selection)
     
     # 视图推荐内容
     view_recommendation_code_example = read_view_recommendation("./prompts/view_recommendation_code.txt")
-    # print("------view_recommendation_code_example------")
-    # print(view_recommendation_code_example)
+    print("------view_recommendation_code_example------")
+    print(view_recommendation_code_example)
     
     code_example = """
 ```python
@@ -295,11 +326,15 @@ def plot(data: pd.DataFrame):
 
     以下是你可以参考的代码框架：
     {code_example}
+    然后，自我检查生成的代码是否正确，并进行修正。
     """
 
 
-    record2 = query(prompt2, thread_id, assistant_id)
+    # record2 = query(prompt2, thread_id, assistant_id)
+    # print("----------------record2--------------------", record2)
+    record2 = self_refine_step(prompt2, thread_id, assistant_id)
     print("----------------record2--------------------", record2)
+    
 
     if "python_codes" in record2 and record2["python_codes"].strip():  # 确保python_codes存在且不为空
         codes = record2["python_codes"]
@@ -330,13 +365,63 @@ def plot(data: pd.DataFrame):
                 chart_json["data"] = {"url": f"http://127.0.0.1:5000/data/data_{string}.json"}
                 del chart_json["datasets"]
         
-        prompt3 = f"""
-        用户类型：{user_type}。用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。回答应包含以下结构，避免过于详细的解释，确保每部分不超过两句话：
+        # prompt3 = f"""
+        # 用户类型：{user_type}。用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。回答应包含以下结构，避免过于详细的解释，确保每部分不超过两句话：
 
-        1. 数据点：根据用户问题提供关键数据点。
-        2. 计算结果：根据数据进行必要的计算，如增长率等。
-        3. 原因分析：解释数据变化和计算结果的原因。
+        # 1. 数据点：根据用户问题提供关键数据点。
+        # 2. 计算结果：根据数据进行必要的计算，如增长率等。
+        # 3. 原因分析：解释数据变化和计算结果的原因。
         
+
+        # 请从以下数据集中提取相关信息：
+        # {data.to_dict()}
+        # 问题：{task}
+
+        # 相关维度：请描述问题涉及的具体维度。
+
+        # 回答示例：
+        # 如果用户类型是普通投资者：
+        # 1. **数据点**:
+        # - 提供年份、权益乘数增长率等关键数据点，简明扼要。
+        # 2. **计算结果**:
+        # - 提供简明的计算结果，突出结论。
+        # 3. **原因分析**:
+        # - 解释数据变化的关键因素，简洁易懂。
+        
+
+        # 如果用户类型是财务专家：
+        # 1. **数据点**:
+        # - 提供详细的关键数据点，包含更多数据背景。
+        # 2. **计算结果**:
+        # - 提供详细的计算结果，强调具体数值。
+        # 3. **原因分析**:
+        # - 详细解释数据变化的原因，指出关键因素和背景。
+        
+
+        # 请务必按上述格式返回答案。
+        # 然后，自我检查生成的回答是否正确，并进行修正。
+        # """
+        
+        prompt3 = f"""
+        用户类型：{user_type}。
+        用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。每部分回答不超过两句话。
+
+        如果用户类型是普通投资者：
+        1. **数据点**:
+        - 提供关键数据点。例如：2016年权益乘数为1.9546。
+        2. **计算结果**:
+        - 简明提供计算结果。例如：权益乘数增长率为18.34%。
+        3. **原因分析**:
+        - 简要解释数据变化的关键因素。例如：市场需求增加。
+
+        如果用户类型是财务专家：
+        1. **数据点**:
+        - 提供详细关键数据点。例如：2016年权益乘数为1.9546，2017年为2.3135。
+        2. **计算结果**:
+        - 提供详细计算结果。例如：增长率为18.34%。
+        3. **原因分析**:
+        - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。
+
 
         请从以下数据集中提取相关信息：
         {data.to_dict()}
@@ -344,36 +429,59 @@ def plot(data: pd.DataFrame):
 
         相关维度：请描述问题涉及的具体维度。
 
-        回答示例：
-        如果用户类型是普通投资者：
-        1. **数据点**:
-        - 提供年份、权益乘数增长率等关键数据点，简明扼要。
-        2. **计算结果**:
-        - 提供简明的计算结果，突出结论。
-        3. **原因分析**:
-        - 解释数据变化的关键因素，简洁易懂。
-        
-
-        如果用户类型是财务专家：
-        1. **数据点**:
-        - 提供详细的关键数据点，包含更多数据背景。
-        2. **计算结果**:
-        - 提供详细的计算结果，强调具体数值。
-        3. **原因分析**:
-        - 详细解释数据变化的原因，指出关键因素和背景。
-        
-
-        请务必按上述格式返回答案。
+        请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         """
 
 
 
         
-        record3 = query(prompt3, thread_id, assistant_id)
+        # record3 = query(prompt3, thread_id, assistant_id)
+        # print("----------------record3--------------------", record3)
+        record3 = self_refine_step(prompt3, thread_id, assistant_id)
         print("----------------record3--------------------", record3)
+        
 
+        # if "texts" in record3:
+        #     record3["texts"] = preprocess_text(record3["texts"])
+            
         if "texts" in record3:
             record3["texts"] = preprocess_text(record3["texts"])
+            if chart_json is None:
+                chart_json = {}
+            chart_json["insights"] = record3["texts"]
+            
+        
+        # Prompt 4: 格式化洞察
+        prompt4 = f"""
+        请将以下内容转化为格式：
+        [
+            {{"year": <年份>, "describe": "<描述>" }},
+            {{"year": <年份>, "describe": "<描述>" }},
+            {{"year": <年份>, "describe": "<描述>" }}
+        ]
+        内容：{record3["texts"]}
+        
+        请按以下步骤执行：
+        1. 提取每个段落中的年份信息，作为 year 字段的值。
+        2. 将段落剩余的内容作为 describe 字段的值。
+        3. 确保每个段落都按上述格式转换。
+        4. 将转换后的结果以 JSON 格式返回。
+
+        请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
+        """
+
+        record4 = self_refine_step(prompt4, thread_id, assistant_id)
+        print("----------------record4--------------------", record4)
+
+        if "texts" in record4:
+            if chart_json is None:
+                chart_json = {}
+            chart_json["texts"] = clean_and_parse_json(record4["texts"])
+        
+
+
+            
+            
 
         record = {"json_data": record3.get("json_data", None), "chart_json": chart_json, "codes": codes, "texts": record3.get("texts", None)}
         print("----------------JSON Data----------------", record["json_data"])
@@ -382,13 +490,63 @@ def plot(data: pd.DataFrame):
         print("----------------Chart JSON----------------", record["chart_json"])
         print("----------------Record--------------------", record)
     else:
-        prompt3 = f"""
-        用户类型：{user_type}。用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。回答应包含以下结构，避免过于详细的解释，确保每部分不超过两句话：
+        # prompt3 = f"""
+        # 用户类型：{user_type}。用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。回答应包含以下结构，避免过于详细的解释，确保每部分不超过两句话：
 
-        1. 数据点：根据用户问题提供关键数据点。
-        2. 计算结果：根据数据进行必要的计算，如增长率等。
-        3. 原因分析：解释数据变化和计算结果的原因。
+        # 1. 数据点：根据用户问题提供关键数据点。
+        # 2. 计算结果：根据数据进行必要的计算，如增长率等。
+        # 3. 原因分析：解释数据变化和计算结果的原因。
         
+
+        # 请从以下数据集中提取相关信息：
+        # {data.to_dict()}
+        # 问题：{task}
+
+        # 相关维度：请描述问题涉及的具体维度。
+
+        # 回答示例：
+        # 如果用户类型是普通投资者：
+        # 1. **数据点**:
+        # - 提供年份、权益乘数增长率等关键数据点，简明扼要。
+        # 2. **计算结果**:
+        # - 提供简明的计算结果，突出结论。
+        # 3. **原因分析**:
+        # - 解释数据变化的关键因素，简洁易懂。
+        
+
+        # 如果用户类型是财务专家：
+        # 1. **数据点**:
+        # - 提供详细的关键数据点，包含更多数据背景。
+        # 2. **计算结果**:
+        # - 提供详细的计算结果，强调具体数值。
+        # 3. **原因分析**:
+        # - 详细解释数据变化的原因，指出关键因素和背景。
+        
+
+        # 请务必按上述格式返回答案。
+        # 然后，自我检查生成的回答是否正确，并进行修正。
+        # """
+        
+        prompt3 = f"""
+        用户类型：{user_type}。
+        用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。每部分回答不超过两句话。
+
+        如果用户类型是普通投资者：
+        1. **数据点**:
+        - 提供关键数据点。例如：2016年权益乘数为1.9546。
+        2. **计算结果**:
+        - 简明提供计算结果。例如：权益乘数增长率为18.34%。
+        3. **原因分析**:
+        - 简要解释数据变化的关键因素。例如：市场需求增加。
+
+        如果用户类型是财务专家：
+        1. **数据点**:
+        - 提供详细关键数据点。例如：2016年权益乘数为1.9546，2017年为2.3135。
+        2. **计算结果**:
+        - 提供详细计算结果。例如：增长率为18.34%。
+        3. **原因分析**:
+        - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。
+
 
         请从以下数据集中提取相关信息：
         {data.to_dict()}
@@ -396,33 +554,54 @@ def plot(data: pd.DataFrame):
 
         相关维度：请描述问题涉及的具体维度。
 
-        回答示例：
-        如果用户类型是普通投资者：
-        1. **数据点**:
-        - 提供年份、权益乘数增长率等关键数据点，简明扼要。
-        2. **计算结果**:
-        - 提供简明的计算结果，突出结论。
-        3. **原因分析**:
-        - 解释数据变化的关键因素，简洁易懂。
-        
-
-        如果用户类型是财务专家：
-        1. **数据点**:
-        - 提供详细的关键数据点，包含更多数据背景。
-        2. **计算结果**:
-        - 提供详细的计算结果，强调具体数值。
-        3. **原因分析**:
-        - 详细解释数据变化的原因，指出关键因素和背景。
-        
-
-        请务必按上述格式返回答案。
+        请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         """
 
-        record3 = query(prompt3, thread_id, assistant_id)
-        print("----------------record3--------------------", record2)
+
+        # record3 = query(prompt3, thread_id, assistant_id)
+        # print("----------------record3--------------------", record3)
+        record3 = self_refine_step(prompt3, thread_id, assistant_id)
+        print("----------------record3--------------------", record3)
+        
+        # if "texts" in record3:
+        #     record3["texts"] = preprocess_text(record3["texts"])
         
         if "texts" in record3:
             record3["texts"] = preprocess_text(record3["texts"])
+            if chart_json is None:
+                chart_json = {}
+            chart_json["insights"] = record3["texts"]
+        
+        # Prompt 4: 格式化洞察
+        prompt4 = f"""
+        请将以下内容转化为格式：
+        [
+            {{"year": <年份>, "describe": "<描述>" }},
+            {{"year": <年份>, "describe": "<描述>" }},
+            {{"year": <年份>, "describe": "<描述>" }}
+        ]
+        内容：{record3["texts"]}
+        
+        请按以下步骤执行：
+        1. 提取每个段落中的年份信息，作为 year 字段的值。
+        2. 将段落剩余的内容作为 describe 字段的值。
+        3. 确保每个段落都按上述格式转换。
+        4. 将转换后的结果以 JSON 格式返回。
+
+        请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
+        """
+
+        record4 = self_refine_step(prompt4, thread_id, assistant_id)
+        print("----------------record4--------------------", record4)
+
+        if "texts" in record4:
+            if chart_json is None:
+                chart_json = {}
+            chart_json["texts"] = clean_and_parse_json(record4["texts"])
+        
+
+        
+            
 
         record = {"json_data": record3.get("json_data", None), "chart_json": {}, "codes": "", "texts": record3.get("texts", None)}
 

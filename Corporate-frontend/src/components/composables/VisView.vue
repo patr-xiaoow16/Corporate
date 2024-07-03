@@ -128,21 +128,46 @@ function addToggleButton(container, chartId) {
   console.log(`Text div for chart ${chartId} prepared and hidden.`); // 显示文本区域准备完毕
 
   // 创建列表显示所有洞察
+  // const chart = allCharts.value.find(c => c.id === chartId);
+  // if (chart && chart.json && chart.json.insights) {
+  //   let insights = chart.json.insights;
+
+  //   // 检查并转换 insights 为数组
+  //   if (typeof insights === 'string') {
+  //     insights = insights.split('\n').map(insight => ({ describe: insight }));
+  //   }
+
+  //   console.log(`Found ${insights.length} insights for chart ${chartId}.`); // 显示找到的洞察数量
+  //   const ul = document.createElement('ul');
+  //   insights.forEach(insight => {
+  //     const li = document.createElement('li');
+  //     li.textContent = insight.describe;
+  //     ul.appendChild(li);
+  //   });
+  //   textDiv.appendChild(ul);
+  // } else {
+  //   console.log(`No insights found for chart ${chartId}.`); // 如果没有找到洞察数据
+  // }
+
   const chart = allCharts.value.find(c => c.id === chartId);
-  // console.log("--------------chart----------------", chart);
-  if (chart && chart.json && chart.json.insights) {
-    // console.log("--------------chart insight----------------", chart.json.insights);
+  if (chart && chart.json && chart.json.texts) {
+    console.log("-------------chart.json------------", chart.json);
+    let texts = chart.json.texts;
+    console.log("-------------texts------------", texts);
+
+
+    console.log(`Found ${texts.length} texts for chart ${chartId}.`); // 显示找到的洞察数量
     const ul = document.createElement('ul');
-    console.log(`Found ${chart.json.insights.length} insights for chart ${chartId}.`); // 显示找到的洞察数量
-    chart.json.insights.forEach(insight => {
+    texts.forEach(insight => {
       const li = document.createElement('li');
-      li.textContent = `${insight.year}: ${insight.describe}`;
+      li.textContent = `${insight.year || '未知年份'}，${insight.describe || '无描述'}`;
       ul.appendChild(li);
     });
     textDiv.appendChild(ul);
   } else {
-    console.log(`No insights found for chart ${chartId}.`); // 如果没有找到洞察数据
+    console.log(`No texts found for chart ${chartId}.`); // 如果没有找到洞察数据
   }
+  
 }
 
 // 控制文本显示的函数
@@ -190,17 +215,31 @@ function addSendInsightsButton(container, chartId) {
 }
 
 // 用于发送洞察到时间轴
-function sendInsightsToTimeline(chartId) {
+// function sendInsightsToTimeline(chartId) {
+//   const chart = allCharts.value.find(c => c.id === chartId);
+//   if (chart && chart.json && chart.json.insights) {
+//     console.log("-------------chart---------------", chart);
+//     const insightsTexts = chart.json.insights.map(insight => `${insight.year}: ${insight.describe}`).join('\n');
+//     // 发送事件或更新全局状态
+//     contentstore.setTimelineDetails(chartId, insightsTexts);
+//     console.log(`Insights for chart ${chartId} sent.`);
+//     console.log("-------------insighttext---------------", insightsTexts);
+//   }
+
+  function sendInsightsToTimeline(chartId) {
   const chart = allCharts.value.find(c => c.id === chartId);
-  if (chart && chart.json && chart.json.insights) {
+  if (chart && chart.json && chart.json.texts) {
     console.log("-------------chart---------------", chart);
-    const insightsTexts = chart.json.insights.map(insight => `${insight.year}: ${insight.describe}`).join('\n');
+    const insightsTexts = chart.json.texts.map(insight => `${insight.year}: ${insight.describe}`).join('\n');
     // 发送事件或更新全局状态
     contentstore.setTimelineDetails(chartId, insightsTexts);
-    console.log(`Insights for chart ${chartId} sent.`);
+    console.log(`Texts for chart ${chartId} sent.`);
     console.log("-------------insighttext---------------", insightsTexts);
   }
+  
 }
+
+
 
 // 首次加载时渲染所有图表
 function renderAllCharts() {

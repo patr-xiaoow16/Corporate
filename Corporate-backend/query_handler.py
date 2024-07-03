@@ -121,4 +121,5 @@ def query(prompt, thread_id, assistant_id):
     # 保存历史记录
     save_history_to_file({"texts": last_text, "json_data": json_data, "chart_json": chart_json, "python_codes": python_codes, "tasks": tasks}, cur_id=thread_id)
     
+    
     return {"texts": last_text, "json_data": json_data, "chart_json":chart_json, "python_codes":python_codes, "tasks": tasks}

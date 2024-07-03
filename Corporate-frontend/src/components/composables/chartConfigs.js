@@ -103,7 +103,7 @@ export const getNodeConfig = (label) => {
                     }
                 }
             ],
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "非流动资产最少，为 446,502,826.3 元" },
                 { "year": 2022, "describe": "非流动资产最多，为 9,632,486,090.0 元" },
                 { "year": 2015, "describe": "非流动资产波动最大，从2014年的 446,502,826.3 元增加到 1,156,193,876.0 元，增长率约为 159%" }
@@ -222,7 +222,7 @@ export const getNodeConfig = (label) => {
                     "titleColor": "#666"
                 }
             },
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "净利润最少，为 283,286,523.03 元" },
                 { "year": 2022, "describe": "净利润最多，为 3,695,435,858.45 元" },
                 { "year": 2022, "describe": "净利润波动最大，从2021年的 1,703,994,570.57 增长到 3,695,435,858.45 元，增长率约为 116.9%" }
@@ -332,7 +332,7 @@ export const getNodeConfig = (label) => {
                     }
                 ]
             },
-            "insights": [
+            "texts": [
                 { "year": 2016, "describe": "净资产收益率最少，为 0.0724" },
                 { "year": 2022, "describe": "净资产收益率最多，为 0.1863" },
                 { "year": 2020, "describe": "净资产收益率波动最大，从2019年的 0.1002 增加到 0.1753，增长率约为 74.9%" }
@@ -436,7 +436,7 @@ export const getNodeConfig = (label) => {
                     "filter": { "selection": "brush" }
                 }
             ],
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "流动资产最少，为 4,432,848,117 元" },
                 { "year": 2022, "describe": "流动资产最多，为 51,993,725,437 元" },
                 { "year": 2021, "describe": "流动资产波动最大，从2020年的 23,253,041,619 元增加到 36,307,432,822 元，增长率约为 56%" }
@@ -508,7 +508,7 @@ export const getNodeConfig = (label) => {
                     "zoom": "wheel![event.shiftKey]"
                 }
             },
-            "insights": [
+            "texts": [
                 { "year": 2016, "describe": "权益乘数最少，为 1.9546" },
                 { "year": 2022, "describe": "权益乘数最多，为 3.1224" },
                 { "year": 2016, "describe": "权益乘数波动最大，从2016年的 1.9546 增加到2017年的 2.3135，增长率约为 18.34%" }
@@ -610,7 +610,7 @@ export const getNodeConfig = (label) => {
                 "type": "bar",
                 "cursor": "pointer"
             },
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "所得税费用最少，为 42,371,859.53 元" },
                 { "year": 2022, "describe": "所得税费用最多，为 438,525,751.7 元" },
                 { "year": 2021, "describe": "所得税费用波动最大，从2020年的 206,026,555.9 元增加到 188,677,565.3 元，增长率约为 -8.42%" }
@@ -682,7 +682,7 @@ export const getNodeConfig = (label) => {
                     "zoom": "wheel![event.shiftKey]"
                 }
             },
-            "insights": [
+            "texts": [
                 { "year": 2019, "describe": "销售净利率最少，为 0.0701" },
                 { "year": 2017, "describe": "销售净利率最多，为 0.1141" },
                 { "year": 2020, "describe": "销售净利率波动最大，从2019年的 0.0701 增加到 0.1024，增长率约为 46.1%" }
@@ -748,7 +748,7 @@ export const getNodeConfig = (label) => {
                 "type": "bar",
                 "cursor": "pointer"
             },
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "营业利润最少，为 278,788,487.5 元" },
                 { "year": 2022, "describe": "营业利润最多，为 4,141,144,503 元" },
                 { "year": 2021, "describe": "营业利润波动最大，从2020年的 2,168,341,287 元增加到 1,897,577,353 元，增长率约为 -12.5%" }
@@ -895,7 +895,7 @@ export const getNodeConfig = (label) => {
                     "cornerRadiusTopRight": 2
                 }
             },
-            "insights": [
+            "texts": [
                 { "year": 2021, "describe": "营业外收支最少，为 -4,905,217.13 元" },
                 { "year": 2016, "describe": "营业外收支最多，为 54,849,162.06 元" },
                 { "year": 2019, "describe": "营业外收支波动最大，从2018年的 10,213,655.49 元减少到 -16,114,218.87 元，增长率约为 -257.7%" }
@@ -961,7 +961,7 @@ export const getNodeConfig = (label) => {
                 "type": "bar",
                 "cursor": "pointer"
             },
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "营业总收入最少，为 3,062,247,399.0 元" },
                 { "year": 2022, "describe": "营业总收入最多，为 40,257,239,155.0 元" },
                 { "year": 2021, "describe": "营业总收入波动最大，从2020年的 19,285,641,347.0 元增加到 24,136,598,727.0 元，增长率约为 25.1%" }
@@ -1032,7 +1032,7 @@ export const getNodeConfig = (label) => {
                     { "field": "value", "type": "quantitative", "title": "Value", "format": ".4f" }
                 ]
             },
-            "insights": [
+            "texts": [
                 { "year": 2019, "describe": "资产净利率最少，为 0.0399" },
                 { "year": 2020, "describe": "资产净利率最多，为 0.0705" },
                 { "year": 2020, "describe": "资产净利率波动最大，从2019年的 0.0399 增加到 0.0705，增长率约为 76.7%" }
@@ -1136,7 +1136,7 @@ export const getNodeConfig = (label) => {
                     { "field": "值", "type": "quantitative", "title": "股东权益", "format": ",.2f" }
                 ]
             },
-            "insights": [
+            "texts": [
                 { "year": 2016, "describe": "资产周转率最少，为 0.5150" },
                 { "year": 2020, "describe": "资产周转率最多，为 0.6887" },
                 { "year": 2020, "describe": "资产周转率波动最大，从2019年的 0.5698 增加到 0.6887，增长率约为 20.9%" }
@@ -1213,7 +1213,7 @@ export const getNodeConfig = (label) => {
                     "align": "center"
                 }
             },
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "总资产最少，为 4,879,350,944.0 元" },
                 { "year": 2022, "describe": "总资产最多，为 61,626,211,527.0 元" },
                 { "year": 2021, "describe": "总资产波动最大，从2020年的 28,002,933,995.0 元增加到 42,840,130,915.0 元，增长率约为 53.0%" }
@@ -1281,7 +1281,7 @@ export const getNodeConfig = (label) => {
                     { "field": "值", "type": "quantitative", "title": "股东权益", "format": ",.2f" }
                 ]
             },
-            "insights": [
+            "texts": [
                 { "year": 2014, "describe": "股东权益最少，为 2,366,511,465.0 元" },
                 { "year": 2022, "describe": "股东权益最多，为 19,736,995,201.0 元" },
                 { "year": 2021, "describe": "股东权益波动最大，从2020年的 10,864,697,115.0 元增加到 16,703,678,049.0 元，增长率约为 53.7%" }

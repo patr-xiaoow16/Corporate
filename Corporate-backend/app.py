@@ -17,6 +17,8 @@ from decompose_task import decompose_task
 from util import load_txt
 from analysiscn_test import generate_insight_by_llm_codes, read_view_recommendation
 from query_handler_test import query, init_llm
+# from query_handler_2llm import init_llms
+# from analysiscn_test_2llm import generate_insight_by_llm_codes, self_refine_step, judge_information_step
 # from analysis_vega import generate_insight_by_llm
 
 # from summarize import Summarizer
@@ -53,6 +55,36 @@ def ask():
     except Exception as e:
         print("Error handling request:", e)
         return jsonify({"error": "Internal server error"}), 500
+
+# # 2llm
+# @app.route('/ask', methods=['POST'])
+# def ask():
+#     try:
+#         msg = request.get_json()
+#         print(f"Request data: {msg}")
+#         if 'question' in msg and 'user_type' in msg:
+#             free_question = msg['question']
+#             user_type = msg['user_type']
+
+#             # 初始化LLM实例
+#             (main_llm_instance, judge_llm_instance), (main_assistant_id, judge_assistant_id), (main_thread_id, judge_thread_id) = init_llms()
+#             print(f"Initialized LLMs with main_thread_id: {main_thread_id}, main_assistant_id: {main_assistant_id}, judge_thread_id: {judge_thread_id}, judge_assistant_id: {judge_assistant_id}")
+
+#             # 生成见解
+#             record = generate_insight_by_llm_codes(free_question, user_type, main_llm_instance, judge_llm_instance, main_thread_id, main_assistant_id, judge_thread_id, judge_assistant_id)
+#             print("-----------------record---------------", record)
+
+#             # 提取图表数据
+#             chart_json = record.get("chart_json", {})
+#             print("-----------------chart_json---------------", chart_json)
+
+#             return jsonify(record)
+#         else:
+#             print("Error: No question or user_type provided")
+#             return jsonify({"error": "No question or user_type provided"}), 400
+#     except Exception as e:
+#         print("Error handling request:", e)
+#         return jsonify({"error": "Internal server error"}), 500
     
 
 

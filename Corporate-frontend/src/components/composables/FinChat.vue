@@ -33,46 +33,6 @@ const userInput = ref('');
 const selectedUserType = ref('');
 const messages = ref([]);
 
-// const sendQuestion = async () => {
-//     if (userInput.value.trim() && selectedUserType.value) {
-//         const question = userInput.value;
-//         const userType = selectedUserType.value;
-//         const userMessage = { sender: 'user', content: question };
-//         messages.value.push(userMessage);
-//         userInput.value = '';
-
-//         try {
-//             const response = await axios.post('http://127.0.0.1:5000/ask', { question, user_type: userType });
-//             console.log('Response data:', response.data);
-
-//             let insightText = 'No insightful response received.';
-
-//             if (response.data.json_data) {
-//                 if (response.data.json_data.insight) {
-//                     insightText = response.data.json_data.insight;
-//                 } else {
-//                     insightText = JSON.stringify(response.data.json_data);
-//                 }
-//                 messages.value.push({ sender: 'bot', content: insightText });
-//             } else if (response.data.texts) {
-//                 messages.value.push({ sender: 'bot', content: response.data.texts });
-//             } else {
-//                 messages.value.push({ sender: 'bot', content: 'No insightful response received.' });
-//             }
-
-//             if (response.data.chart_json) {
-//                 store.addChartJson(response.data.chart_json);
-//                 console.log('Response chart_json:', response.data.chart_json);
-//             }
-//         } catch (error) {
-//             console.error('Error sending the question:', error);
-//             messages.value.push({ sender: 'bot', content: 'Error communicating with the server.' });
-//         }
-//     } else {
-//         messages.value.push({ sender: 'bot', content: 'Please enter a question and select your user type.' });
-//     }
-//     scrollToBottom();
-// }
 
 const sendQuestion = async () => {
     if (userInput.value.trim() && selectedUserType.value) {
@@ -97,6 +57,10 @@ const sendQuestion = async () => {
             messages.value.push({ sender: 'bot', content: insightText });
 
             if (response.data.chart_json) {
+                // 确保 chart_json.insights 是一个数组
+                if (typeof response.data.chart_json.insights === 'string') {
+                    response.data.chart_json.insights = response.data.chart_json.insights.split('\n').map(insight => ({ describe: insight }));
+                }
                 store.addChartJson(response.data.chart_json);
                 console.log('Response chart_json:', response.data.chart_json);
             }
@@ -125,6 +89,7 @@ const sendQuestion = async () => {
     }
     scrollToBottom();
 }
+
 
 
 

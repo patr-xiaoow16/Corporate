@@ -15,7 +15,7 @@ import time
 import altair as alt
 from decompose_task import decompose_task
 from util import load_txt
-from analysiscn_test import generate_insight_by_llm_codes, read_view_recommendation
+from analysiscn_test import generate_insight_by_llm_codes, read_field_knowledge
 from query_handler_test import query, init_llm
 # from query_handler_2llm import init_llms
 # from analysiscn_test_2llm import generate_insight_by_llm_codes, self_refine_step, judge_information_step

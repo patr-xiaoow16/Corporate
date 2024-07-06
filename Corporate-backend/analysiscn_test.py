@@ -84,12 +84,12 @@ def clean_and_parse_json(text):
         return []
 
 # 视图推荐
-def read_view_recommendation(file_path):
+def read_field_knowledge(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
-        view_recommendation_content = file.read()
-    # print("------view_recommendation_content------")
-    # print(view_recommendation_content)
-    return view_recommendation_content
+        field_knowledge = file.read()
+    # print("------field_knowledge------")
+    # print(field_knowledge)
+    return field_knowledge
 
 # Self-refine 执行生成结果的查询，并在检测到错误或警告时进行自我评估和修正。
 def self_refine_step(prompt, thread_id, assistant_id):
@@ -110,7 +110,7 @@ def generate_insight_by_llm_codes(task, user_type, thread_id, data_introduction=
     record = {"json_data": {"insight": None, "error_message": None}, "chart_json": None}
     
     # 视图推荐内容
-    view_recommendation_example = read_view_recommendation("./prompts/view_recommendation_question.txt")
+    view_recommendation_example = read_field_knowledge("./prompts/view_recommendation_question.txt")
     print("------view_recommendation_example------")
     print(view_recommendation_example)
     
@@ -129,25 +129,9 @@ def generate_insight_by_llm_codes(task, user_type, thread_id, data_introduction=
     根据用户问题判断绘制视图的类型，从视图推荐内容中选择一种合适的视图类型，并在生成代码之前输出选择的视图类型及选择理由。你只需要给出选择的视图类型以及原因，不需要生成代码。
     然后，自我检查所选视图类型及理由是否正确，若有问题，请进行修正。
     """
-    # prompt1 = f"""
-    # 请帮助我解决以下金融数据分析任务: {task}
-    # 数据介绍: {data_introduction}
-    # 在绘制视图之前，请先参考 view_recommendations.py 文件中的视图推荐内容，并选择合适的视图。
-    # 根据用户问题判断绘制视图的类型，从 view_recommendations.py 文件中的视图推荐内容中选择一种合适的视图类型，并在生成代码之前输出选择的视图类型及选择理由。你只需要给出选择的视图类型以及原因，不需要生成代码。
-    # """
-    
-    # print("------prompt1------")
-    # print(prompt1)
-    
-    # view_selection = query(prompt1, thread_id, assistant_id)
-    # print("----------------view_selection--------------------", view_selection)
+
     view_selection = self_refine_step(prompt1, thread_id, assistant_id)
     print("----------------view_selection--------------------", view_selection)
-    
-    # 视图推荐内容
-    view_recommendation_code_example = read_view_recommendation("./prompts/view_recommendation_code.txt")
-    print("------view_recommendation_code_example------")
-    print(view_recommendation_code_example)
     
     code_example = """
 ```python
@@ -303,6 +287,11 @@ def plot(data: pd.DataFrame):
 
     """
     data = pd.read_csv("uploaded_files/output.csv", encoding='utf-8')
+    
+    # 视图推荐代码
+    view_recommendation_code_example = read_field_knowledge("./prompts/view_recommendation_code.txt")
+    print("------view_recommendation_code_example------")
+    print(view_recommendation_code_example)
 
     prompt2 = f"""
     请帮助我解决以下金融数据分析任务: {task}
@@ -365,13 +354,27 @@ def plot(data: pd.DataFrame):
                 chart_json["data"] = {"url": f"http://127.0.0.1:5000/data/data_{string}.json"}
                 del chart_json["datasets"]
         
-        # prompt3 = f"""
-        # 用户类型：{user_type}。用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。回答应包含以下结构，避免过于详细的解释，确保每部分不超过两句话：
-
-        # 1. 数据点：根据用户问题提供关键数据点。
-        # 2. 计算结果：根据数据进行必要的计算，如增长率等。
-        # 3. 原因分析：解释数据变化和计算结果的原因。
         
+        # prompt3 = f"""
+        # 用户类型：{user_type}。
+        # 用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。每部分回答不超过两句话。
+
+        # 如果用户类型是普通投资者：
+        # 1. **数据点**:
+        # - 提供关键数据点。例如：2016年权益乘数为1.9546。
+        # 2. **计算结果**:
+        # - 简明提供计算结果。例如：权益乘数增长率为18.34%。
+        # 3. **原因分析**:
+        # - 简要解释数据变化的关键因素。例如：市场需求增加。
+
+        # 如果用户类型是财务专家：
+        # 1. **数据点**:
+        # - 提供详细关键数据点。例如：2016年权益乘数为1.9546，2017年为2.3135。
+        # 2. **计算结果**:
+        # - 提供详细计算结果。例如：增长率为18.34%。
+        # 3. **原因分析**:
+        # - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。
+
 
         # 请从以下数据集中提取相关信息：
         # {data.to_dict()}
@@ -379,49 +382,40 @@ def plot(data: pd.DataFrame):
 
         # 相关维度：请描述问题涉及的具体维度。
 
-        # 回答示例：
-        # 如果用户类型是普通投资者：
-        # 1. **数据点**:
-        # - 提供年份、权益乘数增长率等关键数据点，简明扼要。
-        # 2. **计算结果**:
-        # - 提供简明的计算结果，突出结论。
-        # 3. **原因分析**:
-        # - 解释数据变化的关键因素，简洁易懂。
-        
-
-        # 如果用户类型是财务专家：
-        # 1. **数据点**:
-        # - 提供详细的关键数据点，包含更多数据背景。
-        # 2. **计算结果**:
-        # - 提供详细的计算结果，强调具体数值。
-        # 3. **原因分析**:
-        # - 详细解释数据变化的原因，指出关键因素和背景。
-        
-
-        # 请务必按上述格式返回答案。
-        # 然后，自我检查生成的回答是否正确，并进行修正。
+        # 请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         # """
         
+        
+        
+        # 财务指标解释内容
+        financial_indicators_explanation_example = read_field_knowledge("./prompts/financial_indicators.txt")
+        print("------financial_indicators_explanation_example------")
+        print(financial_indicators_explanation_example)
+        
+        # 探索路径
+        path_exploration_example = read_field_knowledge("./prompts/path_exploration.txt")
+        print("------path_exploration_example------")
+        print(path_exploration_example)
+    
         prompt3 = f"""
         用户类型：{user_type}。
         用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。每部分回答不超过两句话。
 
         如果用户类型是普通投资者：
-        1. **数据点**:
-        - 提供关键数据点。例如：2016年权益乘数为1.9546。
-        2. **计算结果**:
-        - 简明提供计算结果。例如：权益乘数增长率为18.34%。
-        3. **原因分析**:
-        - 简要解释数据变化的关键因素。例如：市场需求增加。
+        1. **指标解释**：
+            - 提供财务指标的定义和基本功能，以及在财务健康情况下的典型数值，以下是你可以参考的财务指标解释示例：{financial_indicators_explanation_example}。例如：净资产收益率 (ROE): 表示公司利用股东资本的效率，计算为净利润除以股东权益。高ROE通常指示有效的资本利用。典型健康值在10%至20%之间。回答不超过两句话。
+        2. **数据趋势**：
+            - 提供关键数据点和变化趋势。例如：2016年权益乘数为1.9546。回答不超过两句话。
+        3. **原因分析**：
+            - 简要解释数据变化的关键因素。例如：市场需求增加。回答不超过两句话。
+        4. **探索路径**：
+            - 提供后续探索建议，以下是你可以参考的探索路径示例：{path_exploration_example}。例如：下一步可以深入分析资产净利率。回答不超过一句话。
 
         如果用户类型是财务专家：
-        1. **数据点**:
-        - 提供详细关键数据点。例如：2016年权益乘数为1.9546，2017年为2.3135。
-        2. **计算结果**:
-        - 提供详细计算结果。例如：增长率为18.34%。
-        3. **原因分析**:
-        - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。
-
+        1. **数据趋势**：
+            - 提供详细关键数据点和变化趋势。例如：2016年权益乘数为1.9546，2017年为2.3135。回答不超过两句话。
+        2. **原因分析**：
+            - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。回答不超过两句话。
 
         请从以下数据集中提取相关信息：
         {data.to_dict()}
@@ -431,7 +425,6 @@ def plot(data: pd.DataFrame):
 
         请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         """
-
 
 
         
@@ -453,13 +446,16 @@ def plot(data: pd.DataFrame):
         
         # Prompt 4: 格式化洞察
         prompt4 = f"""
-        请将以下内容转化为格式：
+        请根据提供的文本中的数据趋势和原因分析部分，将其转化为以下JSON格式：
+        请将以上内容转化为格式：
         [
             {{"year": <年份>, "describe": "<描述>" }},
             {{"year": <年份>, "describe": "<描述>" }},
             {{"year": <年份>, "describe": "<描述>" }}
         ]
-        内容：{record3["texts"]}
+        
+        原始文本内容如下：
+        {record3['texts']}
         
         请按以下步骤执行：
         1. 提取每个段落中的年份信息，作为 year 字段的值。
@@ -527,26 +523,65 @@ def plot(data: pd.DataFrame):
         # 然后，自我检查生成的回答是否正确，并进行修正。
         # """
         
+        # prompt3 = f"""
+        # 用户类型：{user_type}。
+        # 用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。每部分回答不超过两句话。
+
+        # 如果用户类型是普通投资者：
+        # 1. **数据点**:
+        # - 提供关键数据点。例如：2016年权益乘数为1.9546。
+        # 2. **计算结果**:
+        # - 简明提供计算结果。例如：权益乘数增长率为18.34%。
+        # 3. **原因分析**:
+        # - 简要解释数据变化的关键因素。例如：市场需求增加。
+
+        # 如果用户类型是财务专家：
+        # 1. **数据点**:
+        # - 提供详细关键数据点。例如：2016年权益乘数为1.9546，2017年为2.3135。
+        # 2. **计算结果**:
+        # - 提供详细计算结果。例如：增长率为18.34%。
+        # 3. **原因分析**:
+        # - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。
+
+
+        # 请从以下数据集中提取相关信息：
+        # {data.to_dict()}
+        # 问题：{task}
+
+        # 相关维度：请描述问题涉及的具体维度。
+
+        # 请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
+        # """
+        
+        # 财务指标解释内容
+        financial_indicators_explanation_example = read_field_knowledge("./prompts/financial_indicators.txt")
+        print("------financial_indicators_explanation_example------")
+        print(financial_indicators_explanation_example)
+        
+        # 探索路径
+        path_exploration_example = read_field_knowledge("./prompts/path_exploration.txt")
+        print("------path_exploration_example------")
+        print(path_exploration_example)
+    
         prompt3 = f"""
         用户类型：{user_type}。
         用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。每部分回答不超过两句话。
 
         如果用户类型是普通投资者：
-        1. **数据点**:
-        - 提供关键数据点。例如：2016年权益乘数为1.9546。
-        2. **计算结果**:
-        - 简明提供计算结果。例如：权益乘数增长率为18.34%。
-        3. **原因分析**:
-        - 简要解释数据变化的关键因素。例如：市场需求增加。
+        1. **指标解释**：
+            - 提供财务指标的定义和基本功能，以及在财务健康情况下的典型数值，以下是你可以参考的财务指标解释示例：{financial_indicators_explanation_example}。例如：净资产收益率 (ROE): 表示公司利用股东资本的效率，计算为净利润除以股东权益。高ROE通常指示有效的资本利用。典型健康值在10%至20%之间。回答不超过两句话。
+        2. **数据趋势**：
+            - 提供关键数据点和变化趋势。例如：2016年权益乘数为1.9546。回答不超过两句话。
+        3. **原因分析**：
+            - 简要解释数据变化的关键因素。例如：市场需求增加。回答不超过两句话。
+        4. **探索路径**：
+            - 提供后续探索建议，以下是你可以参考的探索路径示例：{path_exploration_example}。例如：下一步可以深入分析资产净利率。回答不超过一句话。
 
         如果用户类型是财务专家：
-        1. **数据点**:
-        - 提供详细关键数据点。例如：2016年权益乘数为1.9546，2017年为2.3135。
-        2. **计算结果**:
-        - 提供详细计算结果。例如：增长率为18.34%。
-        3. **原因分析**:
-        - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。
-
+        1. **数据趋势**：
+            - 提供详细关键数据点和变化趋势。例如：2016年权益乘数为1.9546，2017年为2.3135。回答不超过两句话。
+        2. **原因分析**：
+            - 详细解释数据变化原因。例如：市场需求增加和杠杆率提高。回答不超过两句话。
 
         请从以下数据集中提取相关信息：
         {data.to_dict()}
@@ -574,13 +609,16 @@ def plot(data: pd.DataFrame):
         
         # Prompt 4: 格式化洞察
         prompt4 = f"""
-        请将以下内容转化为格式：
+        请根据提供的文本中的数据趋势和原因分析部分，将其转化为以下JSON格式：
+        请将以上内容转化为格式：
         [
             {{"year": <年份>, "describe": "<描述>" }},
             {{"year": <年份>, "describe": "<描述>" }},
             {{"year": <年份>, "describe": "<描述>" }}
         ]
-        内容：{record3["texts"]}
+        
+        原始文本内容如下：
+        {record3['texts']}
         
         请按以下步骤执行：
         1. 提取每个段落中的年份信息，作为 year 字段的值。

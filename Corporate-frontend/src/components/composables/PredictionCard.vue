@@ -111,7 +111,6 @@ const changeActiveSeries = (activeSeries) => {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     height: 280px;
-    width: 355px;
 }
 
 .prediction-header {

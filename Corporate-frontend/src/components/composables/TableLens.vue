@@ -2,15 +2,15 @@
   <div class="card-header">
     <p>上传数据</p>
   </div>
-  <div>
-    <table>
+  <div class="h-48 overflow-y-auto overflow-x-auto">
+    <table class="text-xs ">
       <thead>
         <tr>
           <th v-for="header in headers" :key="header">{{ header }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, index) in csvData" :key="index">
+        <tr v-for="(row, index) in formattedCsvData" :key="index">
           <td v-for="header in headers" :key="header">{{ row[header] }}</td>
         </tr>
       </tbody>
@@ -32,6 +32,22 @@ const headers = computed(() => {
   }
   return [];
 });
+
+const formattedCsvData = computed(() => {
+  return csvData.value.map(row => {
+    const formattedRow = {};
+    for (let key in row) {
+      formattedRow[key] = +row[key];
+      formattedRow[key] = formattedRow[key].toFixed(2);
+      // if (typeof row[key] === 'number') {
+      //   formattedRow[key] = row[key].toFixed(2);
+      // } else {
+      //   formattedRow[key] = row[key];
+      // }
+    }
+    return formattedRow;
+  });
+});
 </script>
 
 <style scoped>
@@ -43,11 +59,16 @@ const headers = computed(() => {
   background-color: #f9f9f9;
   border-bottom: 1px solid #eee;
 }
-table, th, td {
+
+table,
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-th, td {
-  padding: 10px;
+th,
+td {
+  padding-left: 4px;
+  padding-right: 4px;
 }
 </style>

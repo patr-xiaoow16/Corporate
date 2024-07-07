@@ -2,10 +2,9 @@
   <div class="card-header">
     <p>探索指南</p>
   </div>
-  <div class="markdown-area p-4">
-    <div v-html="renderedMarkdown" class="markdown-text p-2"></div>
+  <div class="markdown-area p-4 px-6">
+    <div v-html="renderedMarkdown" class="markdown-text m-6"></div>
   </div>
-  
 </template>
 
 <script setup>
@@ -26,19 +25,19 @@ const renderedMarkdown = computed(() => {
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  background-color: #f9f9f9;
+  background-color: transparent;
   border-bottom: 1px solid #eee;
 }
 
 .markdown-area {
-  background-color: #f5f5f5;
+  background-image: url('/bg-img.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
 }
 
 .markdown-text {
-  border: 1px solid #ccc;
-  background-color: #fff;
   overflow-y: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 </style>

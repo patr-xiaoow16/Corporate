@@ -18,7 +18,7 @@
             <input v-model="userInput" placeholder="Type your message..." @keyup.enter="sendQuestion"
                 class="input-box" />
             <div class="w-12 ml-2">
-                <img src="/public/upload.png" class="rounded-xl border border-4 border-gray-300 cursor-pointer" @click="handleIconClick" />
+                <img src="/upload.png" class="rounded-xl border border-4 border-gray-300 cursor-pointer" @click="handleIconClick" />
             </div>
             <button @click="sendQuestion" class="send-button">Send</button>
         </div>

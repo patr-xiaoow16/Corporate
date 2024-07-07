@@ -6,6 +6,7 @@ import { generateChartId } from './generateId';
 export const useMainStore = defineStore('mainStore', {
     state: () => ({
         chartsJson: [],
+        csvData: []
     }),
     actions: {
         addChartJson(json) {
@@ -17,6 +18,9 @@ export const useMainStore = defineStore('mainStore', {
             this.chartsJson.push(chart);
             console.log('Chart JSON added to main store:', { id, json });
             console.log('Chart JSON added to main store:', chart); // 记录整个图表对象，包括id和json
+        },
+        setCsvData(data) {
+            this.csvData = data;
         },
     },
 });

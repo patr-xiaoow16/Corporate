@@ -4,20 +4,19 @@
     </div>
     <div id="app" class="chat-container">
         <div class="chat-box">
-            <div v-for="(message, index) in messages" :key="index"
-                :class="messageClass(message)">
+            <div v-for="(message, index) in messages" :key="index" :class="messageClass(message)">
                 <p v-if="!message.isTask" @click="message.isTask ? selectExecutedTask(message.content) : null">
-                  {{ message.content }}
+                    {{ message.content }}
                 </p>
                 <!-- <button v-else @click="selectDecomposedTask(message.content)" class="task-button">
                   {{ message.content }}
                 </button> -->
                 <button v-else @click="selectDecomposedTask(message.content)" class="task-button">
-                  <div class="task-content">{{ message.content }}</div>
-                  <div class="task-details">
-                    <div class="task-description">{{ message.description }}</div>
-                    <div class="task-score">Score: {{ message.score }}</div>
-                  </div>
+                    <div class="task-content">{{ message.content }}</div>
+                    <div class="task-details">
+                        <div class="task-description">{{ message.description }}</div>
+                        <div class="task-score">Score: {{ message.score }}</div>
+                    </div>
                 </button>
             </div>
         </div>
@@ -41,11 +40,11 @@ const decomposedTasks = ref([]);  // 用于存储分解后的任务
 const taskDecomposed = ref(false); // 用于跟踪任务是否已经分解
 
 const messageClass = (message) => {
-  return {
-    'user-message': message.sender === 'user',
-    'bot-message': message.sender === 'bot',
-    'task-message': message.isTask
-  };
+    return {
+        'user-message': message.sender === 'user',
+        'bot-message': message.sender === 'bot',
+        'task-message': message.isTask
+    };
 };
 
 const sendQuestion = async () => {
@@ -58,9 +57,9 @@ const sendQuestion = async () => {
 
             // 添加任务
             const taskMessages = [
-              { sender: 'bot', content: "任务一：年度综合财务表现评估", isTask: true },
-              { sender: 'bot', content: "任务二：流动性和偿债能力分析", isTask: true },
-              { sender: 'bot', content: "任务三：同比和环比增长分析", isTask: true }
+                { sender: 'bot', content: "任务一：年度综合财务表现评估", isTask: true },
+                { sender: 'bot', content: "任务二：流动性和偿债能力分析", isTask: true },
+                { sender: 'bot', content: "任务三：同比和环比增长分析", isTask: true }
             ];
             messages.value.push(...taskMessages);
             return;
@@ -273,7 +272,7 @@ const selectExecutedTask = async (taskContent) => {
     border-radius: 8px;
     margin: 5px 0;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .task-content {
@@ -293,5 +292,4 @@ const selectExecutedTask = async (taskContent) => {
     color: #333;
     font-weight: bold;
 }
-
 </style>

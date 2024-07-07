@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card ">
         <div class="h-1/3 w-full">
             <TableLens></TableLens>
         </div>
@@ -23,6 +23,7 @@ import Recommend from './Recommend.vue';
   margin: 4px;
   overflow: hidden;
   height: inherit;
+  overflow-y: auto;
 }
 
 

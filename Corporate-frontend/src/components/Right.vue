@@ -3,7 +3,7 @@
     <!-- <FinChat></FinChat> -->
     <!-- <ChatView></ChatView> -->
     <TimelineCard></TimelineCard>
-  
+
   </div>
 </template>
 <script setup>

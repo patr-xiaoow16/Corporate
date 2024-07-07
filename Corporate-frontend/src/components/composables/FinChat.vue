@@ -17,6 +17,9 @@
         <div class="input-area">
             <input v-model="userInput" placeholder="Type your message..." @keyup.enter="sendQuestion"
                 class="input-box" />
+            <div class="w-12 ml-2">
+                <img src="/public/upload.png" class="rounded-xl border border-4 border-gray-300 cursor-pointer" @click="handleIconClick" />
+            </div>
             <button @click="sendQuestion" class="send-button">Send</button>
         </div>
     </div>
@@ -90,8 +93,15 @@ const sendQuestion = async () => {
     scrollToBottom();
 }
 
-
-
+const handleIconClick = async () => {
+    try {
+            const response = await axios.get('http://127.0.0.1:5000/getData');
+            const csvData = response.data;
+            store.setCsvData(csvData)
+        } catch (error) {
+            console.error('Error sending the question:', error);
+        }
+}
 
 function scrollToBottom() {
     nextTick(() => {

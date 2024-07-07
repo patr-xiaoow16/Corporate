@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from util import save_chat_history, generate_unique_id,load_txt
 import pandas as pd
 import os
+import csv
 import json
 import openai
 from openai import OpenAI
@@ -55,6 +56,18 @@ def ask():
     except Exception as e:
         print("Error handling request:", e)
         return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/getData', methods=['GET'])
+def getData():
+    csv_path = './uploaded_files/output.csv'
+    data = []
+    
+    with open(csv_path, mode='r') as file:
+        csv_reader = csv.DictReader(file)
+        for row in csv_reader:
+            data.append(row)
+    
+    return jsonify(data)
 
 # # 2llm
 # @app.route('/ask', methods=['POST'])

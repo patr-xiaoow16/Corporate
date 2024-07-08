@@ -20,6 +20,7 @@
             <div class="w-12 ml-2">
                 <img src="/upload.png" class="rounded-xl border border-4 border-gray-300 cursor-pointer" @click="handleIconClick" />
             </div>
+            
             <button @click="sendQuestion" class="send-button">Send</button>
         </div>
     </div>
@@ -102,6 +103,9 @@ const handleIconClick = async () => {
             console.error('Error sending the question:', error);
         }
 }
+
+
+
 
 function scrollToBottom() {
     nextTick(() => {

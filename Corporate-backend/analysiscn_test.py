@@ -59,20 +59,49 @@ def get_globals_dict(code_string, data):
     return globals_dict
 
 def preprocess_text(text):
-    # 删除开头的多余说明
-    start_idx = text.find("1. **数据点**:")
-    if start_idx != -1:
-        text = text[start_idx:]
+    # 删除开头的多余说明部分
+    start_markers = [
+        "1. 数据趋势:",
+        "1. **数据趋势**:",
+        "1. **指标解释**:",
+        "1. 指标解释:"
+    ]
+    start_idx = -1
+    for marker in start_markers:
+        start_idx = text.find(marker)
+        if start_idx != -1:
+            text = text[start_idx:]
+            break
+
+    # 删除结尾的多余说明部分
+    end_suffixes = [
+        "请检查以上回答是否符合您的需求，如果需要进一步调整或有其他问题，请随时告诉我。",
+        "如果需要进一步调整或有其他问题，请随时告诉我。",
+        "请随时告诉我。",
+        "以上回答是否符合您的期望？如果需要对回答进行修改或补充，"
+    ]
+    for suffix in end_suffixes:
+        end_idx = text.find(suffix)
+        if end_idx != -1:
+            text = text[:end_idx]
+            break
 
     # 格式化文本，替换换行符和多余的标记
     text = text.replace("**", "").replace("\n   - ", " - ").replace("\n\n", "\n").replace("\n", " ")
 
+    # 确保统一的标签和标记
+    text = text.replace("### 指标解释", "指标解释：").replace("### 数据趋势", "数据趋势：").replace("### 原因分析", "原因分析：").replace("### 探索路径", "探索路径：")
+
     # 替换各部分标题后的换行符和空格
-    text = text.replace("1. 数据点:", "1. 数据点: -")
-    text = text.replace("2. 计算结果:", "2. 计算结果: -")
+    text = text.replace("1. 指标解释:", "1. 指标解释: -")
+    text = text.replace("2. 数据趋势:", "2. 数据趋势: -")
     text = text.replace("3. 原因分析:", "3. 原因分析: -")
+    text = text.replace("4. 探索路径:", "4. 探索路径: -")
 
     return text
+
+
+
 
 # 移除多余的标记并解析 JSON
 def clean_and_parse_json(text):
@@ -123,6 +152,7 @@ def generate_insight_by_llm_codes(task, user_type, thread_id, data_introduction=
     # print(view_recommendations)
     
     prompt1 = f"""
+    假设你是一名金融分析师。
     请帮助我解决以下金融数据分析任务: {task}
     数据介绍: {data_introduction}
     在绘制视图之前，请先参考以下视图推荐内容：{view_recommendation_example}，并选择合适的视图。
@@ -399,7 +429,7 @@ def plot(data: pd.DataFrame):
     
         prompt3 = f"""
         用户类型：{user_type}。
-        用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。每部分回答不超过两句话。
+        用户提供了一个数据集，并提出了一个特定问题。请根据用户问题中提到的相关维度进行必要的计算，并生成结构化的回答。请注意在回答的过程中，将解读部分的文本与视图中的数据进行逐项比对，确保每一个解读与视图数据相符。此外，检查视图中展示的所有数据点，并确认解读部分是否正确解释了这些数据点，如果发生错误，请进行修正。每部分回答不超过两句话。
 
         如果用户类型是普通投资者：
         1. **指标解释**：
@@ -422,6 +452,7 @@ def plot(data: pd.DataFrame):
         问题：{task}
 
         相关维度：请描述问题涉及的具体维度。
+        请注意如果是财务专家是没有指标解释和探索路径的。
 
         请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         """
@@ -457,11 +488,12 @@ def plot(data: pd.DataFrame):
         原始文本内容如下：
         {record3['texts']}
         
-        请按以下步骤执行：
-        1. 提取每个段落中的年份信息，作为 year 字段的值。
-        2. 将段落剩余的内容作为 describe 字段的值。
-        3. 确保每个段落都按上述格式转换。
-        4. 将转换后的结果以 JSON 格式返回。
+        操作步骤：
+        1. 从文本中提取每个段落的年份信息，将这些年份作为 'year' 字段的值。
+        2. 将与每个年份相关的描述性文本提取出来，作为 'describe' 字段的值。
+        3. 若段落中年份信息不明确或无法确定，该段落不需要转换成JSON对象。
+        4. 确保每个成功提取的数据点都转换成上述指定的JSON对象格式。
+        5. 将所有转换后的对象组合成一个JSON数组并返回。
 
         请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         """
@@ -575,7 +607,7 @@ def plot(data: pd.DataFrame):
         3. **原因分析**：
             - 简要解释数据变化的关键因素。例如：市场需求增加。回答不超过两句话。
         4. **探索路径**：
-            - 提供后续探索建议，以下是你可以参考的探索路径示例：{path_exploration_example}。例如：下一步可以深入分析资产净利率。回答不超过一句话。
+            - 提供后续探索建议，以下是你可以参考的探索路径示例：{path_exploration_example}，明确下一步探索的财务指标。例如：下一步可以深入分析资产净利率。回答不超过一句话。
 
         如果用户类型是财务专家：
         1. **数据趋势**：
@@ -588,6 +620,7 @@ def plot(data: pd.DataFrame):
         问题：{task}
 
         相关维度：请描述问题涉及的具体维度。
+        请注意如果是财务专家是没有指标解释和探索路径的。
 
         请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         """
@@ -620,11 +653,12 @@ def plot(data: pd.DataFrame):
         原始文本内容如下：
         {record3['texts']}
         
-        请按以下步骤执行：
-        1. 提取每个段落中的年份信息，作为 year 字段的值。
-        2. 将段落剩余的内容作为 describe 字段的值。
-        3. 确保每个段落都按上述格式转换。
-        4. 将转换后的结果以 JSON 格式返回。
+        操作步骤：
+        1. 从文本中提取每个段落的年份信息，将这些年份作为 'year' 字段的值。
+        2. 将与每个年份相关的描述性文本提取出来，作为 'describe' 字段的值。
+        3. 若段落中年份信息不明确或无法确定，该段落不需要转换成JSON对象。
+        4. 确保每个成功提取的数据点都转换成上述指定的JSON对象格式。
+        5. 将所有转换后的对象组合成一个JSON数组并返回。
 
         请按上述格式返回答案，并自我检查生成的回答是否正确，并进行修正。
         """

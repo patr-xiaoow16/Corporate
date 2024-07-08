@@ -2,7 +2,7 @@
   <div class="card-header">
     <p>探索指南</p>
   </div>
-  <div class="markdown-area p-4 px-6">
+  <div class="markdown-area p-2 px-3">
     <div v-html="renderedMarkdown" class="markdown-text m-6"></div>
   </div>
 </template>
@@ -21,7 +21,7 @@ const renderedMarkdown = computed(() => {
 
 <style scoped>
 .card-header {
-  padding: 8px;
+  padding: 4px;
   font-size: 16px;
   font-weight: bold;
   color: #333;
@@ -34,7 +34,8 @@ const renderedMarkdown = computed(() => {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100%;
+  background-size: contain; /* 确保图片被包含在容器内 */
+  height: 40%;
 }
 
 .markdown-text {

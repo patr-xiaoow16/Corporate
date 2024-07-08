@@ -2,7 +2,7 @@
   <div class="card-header">
     <p>上传数据</p>
   </div>
-  <div class="h-48 overflow-y-auto overflow-x-auto">
+  <div class="h-32 overflow-y-auto overflow-x-auto">
     <table class="text-xs ">
       <thead>
         <tr>

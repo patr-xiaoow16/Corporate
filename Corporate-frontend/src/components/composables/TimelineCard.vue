@@ -422,7 +422,7 @@ h3 {
     padding: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
-    height: 748px;
+    height: 744px;
 
 }
 

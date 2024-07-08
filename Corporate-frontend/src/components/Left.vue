@@ -8,10 +8,11 @@
     <!-- <TimelineCard></TimelineCard> -->
     <PredictionCard></PredictionCard>
 
-    <el-switch v-model="switcher" size="small" active-text="Conversation" inactive-text="Data View" />
+    <el-switch v-model="switcher" size="small" active-text="对话" inactive-text="数据" />
     <transition name="fade">
       <div v-if="switcher" key="div1">
         <FinChat></FinChat>
+        <!-- <FinChatTest></FinChatTest> -->
       </div>
       <div v-else key="div2">
         <Switcher></Switcher>
